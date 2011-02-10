@@ -12,5 +12,5 @@ Import-Package: org.eclipse.virgo.web.dm;version="[2.0.0, 3.0.0)
 Bundle-ManifestVersion: 2
 Bundle-SymbolicName: greenpages.web
 Tool: Bundlor 1.0.0.M6
-Bundle-Version: 2.0
+Bundle-Version: 3.0.0
 
