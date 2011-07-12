@@ -1,0 +1,497 @@
+<?xml version="1.0"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+    "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<chapter id="installing.greenpages">
+  <title>Installing and Running @greenpages@</title>
+    <titleabbrev>Installing @greenpages@</titleabbrev>
+  <section id="installing.greenpages.introduction">
+    <title>Introduction</title>
+    <para>@greenpages@ is a simple application that allows users to search an online email address directory. Each listing
+    in the directory details the relevant email addresses and the name of the owner. @greenpages@ has only three screens:
+    the search screen, the results screen and the listing detail screen.</para>
+    <para>In the search screen, users can enter search criteria to be matched against the listings in the directory.
+    The result screen displays any listings that match the criteria entered by the user. The listing detail screen
+    shows all the data known about a given listing.</para>
+    <para>Despite its simplicity, @greenpages@ is designed to demonstrate many different @webserv@ features and to
+    act as a template from which other modular applications can be built. In particular, @greenpages@ demonstrates: 
+    <itemizedlist mark="bullet">
+      <listitem><para>module dependencies with <literal>Import-Package</literal>,</para></listitem>
+      <listitem><para>load-time weaving with JPA and AspectJ,</para></listitem>
+      <listitem><para>bundle classpath scanning, and</para></listitem>
+      <listitem><para>service export, lookup and injection.</para></listitem>
+    </itemizedlist></para>
+    <para>In addition to demonstrating common @webserv@ features, @greenpages@ demonstrates integration with:
+    <itemizedlist mark="bullet">
+      <listitem><para>Spring Framework 3.0;</para></listitem>
+      <listitem><para>FreeMarker 2.3;</para></listitem>
+      <listitem><para>EclipseLink 1.0.0;</para></listitem>
+      <listitem><para>H2 1.0.71; and</para></listitem>
+      <listitem><para>Commons DBCP 1.2.2.</para></listitem>
+    </itemizedlist>
+    </para>
+	<para>The @greenpages@ application is packaged as a PAR file containing four modules.
+       <mediaobject>
+         <imageobject role="fo">
+          <imagedata fileref="images/installing-greenpages/greenpages.png" format="PNG" align="center" width="11cm"/>
+        </imageobject>
+        <imageobject role="html">
+          <imagedata fileref="images/installing-greenpages/greenpages.png" format="PNG" align="center" width="13cm"/>
+        </imageobject>
+       </mediaobject>
+    </para>
+    <para>
+        The <literal>greenpages.db</literal> module provides access to an external database and publishes a
+		<literal>javax.sql.DataSource</literal> service.
+    </para>
+    <para>
+		The <literal>greenpages.app</literal> module exports a <literal>greenpages</literal> package containing
+		<literal>Directory</literal> and <literal>Listing</literal> interfaces.
+    </para>
+    <para>
+		The <literal>greenpages.jpa</literal> module imports the <literal>greenpages</literal> package and
+		uses the <literal>javax.sql.DataSource</literal> service to
+		access the external database and publishes its contents as a <literal>greenpages.Directory</literal> service.
+    </para>
+    <para>
+		The <literal>greenpages.web</literal> module imports the <literal>greenpages</literal> package and uses the
+		<literal>greenpages.Directory</literal> service to respond to web requests.
+    </para>
+  </section>
+  
+  <section id="installing.greenpages.obtaining">
+    <title>Obtaining @greenpages@</title>
+    <para>This document provides instructions for building the complete @greenpages@ application and running it in @webserv@. 
+    </para>
+<para>To get the completed @greenpages@ application, including tests and explanatory skeleton parts:
+    <orderedlist>
+      <listitem>
+        <para>download the latest ZIP file from <programlisting>@greenpages.download.url@</programlisting></para>
+      </listitem>
+      <listitem>
+        <para>extract all the files from the ZIP file to a convenient directory (preserving the directory structure).</para>
+      </listitem>
+    </orderedlist>
+</para>
+<para>To extract the files on Windows:
+<programlisting>prompt> mkdir c:\springsource\samples
+prompt> cd c:\springsource\samples
+prompt> jar xf c:\path\to\@greenpages.zip.file@
+prompt> set GREENPAGES_HOME=c:\springsource\samples\@greenpages.expanded.dir@</programlisting>
+</para>
+<para>To extract the files on Unix systems:
+<programlisting>prompt$ mkdir -p /opt/springsource/samples 
+prompt$ cd /opt/springsource/samples 
+prompt$ unzip /path/to/@greenpages.zip.file@ 
+prompt$ export GREENPAGES_HOME=/opt/springsource/samples/@greenpages.expanded.dir@
+</programlisting>
+</para>
+<para>The environment variable <literal>GREENPAGES_HOME</literal> set here is not used by the projects, but is used as a shorthand
+    in the instructions that follow.
+</para>
+<para>The @greenpages@ zip file contains two main directories called <literal>solution</literal> and <literal>start</literal>.
+    The <literal>solution</literal> directory contains the completed application which can be built and tested (as described in the next section).
+    The <literal>start</literal> directory contains an initial skeleton of the @greenpages@ application which can be used to generate the full application.
+</para>
+  </section>
+
+  <section id="installing.greenpages.building">
+    <title>Building and installing @greenpages@</title>
+    <section id="installing.greenpages.building.mvn">
+      <title>Building with @maven.full@</title>
+<para>@greenpages@ uses @maven.full@ as its primary build system. Each module of the application can be built
+    separately and the entire application can built and assembled into a PAR file from a single location.
+    To build the application and assemble it into a PAR
+    file:
+  <orderedlist>
+    <listitem>
+        <para>Make <code>$GREENPAGES_HOME/solution</code> the current directory.</para>
+    </listitem>
+    <listitem>
+        <para>Run the command
+        <code>mvn package</code>. The first time this is run several files will be downloaded
+        from @maven@ repositories and @s2@ repositories. Subsequent runs will not need to do this.
+        </para>
+    </listitem>
+    <listitem>
+        <para>Verify that the 
+        <code>greenpages-@app.version@.par</code> file exists in 
+        <code>$GREENPAGES_HOME/solution/greenpages/target</code>.
+        </para>
+    </listitem>
+  </orderedlist>
+</para>
+</section>
+
+<section id="installing.greenpages.building.par.provided">
+      <title>Installing dependencies into @webserv@</title>
+      <para>
+      Unlike traditional Java EE applications, @greenpages@ does not package all of its dependencies inside its
+      deployment unit. Instead, it relies on the mechanisms of OSGi to locate its dependencies at runtime.
+      When running an OSGi application on @webserv@, these dependencies can be loaded into memory as needed, but first they
+      must be made available to @webserv@.
+      </para>
+      <para>The Maven build included with @greenpages@ uses the <code>dependency:copy-dependencies</code> plugin to gather 
+            all the artifacts that @greenpages@ depends on that are not supplied by the @webserv@ runtime. These dependencies 
+            can then be installed into the @webserv@ repository. Dependencies are gathered automatically during the
+			<code>package</code> phase. These dependencies can be found in
+			<literal>$GREENPAGES_HOME/solution/greenpages/target/par-provided</literal>. To install dependencies
+            simply copy all the <code>*.jar</code> files from this directory into <literal>$VWS_HOME/repository/usr</literal>.
+      </para>
+
+<para>Installing dependencies on Windows:
+<programlisting>prompt> cd %GREENPAGES_HOME%\solution\greenpages 
+prompt> copy target\par-provided\* %VWS_HOME%\repository\usr
+</programlisting>
+</para>
+
+<para>Installing Dependencies on UNIX:
+<programlisting>prompt$ cd $GREENPAGES_HOME/solution/greenpages 
+prompt$ cp target/par-provided/* $VWS_HOME/repository/usr
+</programlisting>
+</para>
+<para>
+  Notice that @webserv@ will not necessarily see these dependencies unless its repository indexes are rebuilt.
+  Different repositories behave differently in this respect; some are passive (their indexes are built only once upon startup)
+  and some are active (they can detect new files or files being removed dynamically).
+  The <literal>usr</literal> repository is active so there is no
+  need to restart @webserv@ when copying these files.
+  The next time @webserv@ is started the <literal>-clean</literal> option will cause @webserv@ to re-scan the repository directories in any case.
+  It is always safe to start @webserv@ with the <literal>-clean</literal> option.
+</para>
+</section>
+
+<section id="installing.greenpages.building.db">
+      <title>Starting and configuring the database</title>
+<para>@greenpages@ uses the H2 database to store all its data. Before starting the application, start the database server and populate the database with data.</para>
+          <orderedlist>
+              <listitem><para>Change to the <code>$GREENPAGES_HOME/db</code> current directory.  On Unix:</para>
+		<programlisting>prompt$ cd $GREENPAGES_HOME/db</programlisting>
+		<para>On Windows:</para>
+		<programlisting>prompt> cd %GREENPAGES_HOME%\db</programlisting>
+              </listitem>
+              <listitem><para>Run the database startup script appropriate to the operating system.  For Unix, this is <literal>run.sh</literal>, run in the background:</para>
+		<programlisting>prompt$ sh run.sh &amp;</programlisting>
+		<para>Press Return to continue.</para>
+		<para>On Windows, run the <literal>run.bat</literal> command:</para>
+		<programlisting>prompt> run</programlisting>
+		<para>For both platforms, the command might invoke a browser window offering a connection to the database; close this window.</para>
+              </listitem>
+              <listitem><para>Run the data population script appropriate to the operating system.  For Unix, this is <literal>data.sh</literal>:</para>
+		<programlisting>prompt$ sh data.sh</programlisting>
+		<para>On Windows, run the <literal>data.bat</literal> command:</para>
+		<programlisting>prompt> data</programlisting>
+              </listitem>
+          </orderedlist>
+
+<para>
+Run these commands once to start a database server for H2; the server will continue to run in the background. 
+</para>
+</section>
+
+<section id="installing.greenpages.building.par">
+      <title>Installing and starting @greenpages@ PAR</title>
+
+<para>To install the @greenpages@ PAR into @webserv@ and start it:
+          <orderedlist>
+              <listitem><para>Copy the @greenpages@ PAR  to the <code>$VWS_HOME/pickup</code> directory.  On Unix:</para>
+		<programlisting>prompt$ cd $VWS_HOME
+prompt$ cp $GREENPAGES_HOME/solution/greenpages/target/greenpages-solution-@app.version@.par pickup/</programlisting>
+		<para>On Windows:</para>
+		<programlisting>prompt> cd %VWS_HOME%
+prompt> copy %GREENPAGES_HOME%\solution\greenpages\target\greenpages-solution-@app.version@.par pickup\</programlisting>
+              </listitem>
+              <listitem><para>Start @webserv@ with the <literal>-clean</literal> option.  On Unix:</para>
+              <programlisting>prompt$ $VWS_HOME/bin/startup.sh -clean</programlisting> 
+	      <para>On Windows:</para>
+              <programlisting>prompt> "%VWS_HOME%"\bin\startup.bat -clean</programlisting> 
+              </listitem>
+              <listitem>
+<para>Verify that @greenpages@ starts correctly by checking in the @webserv@ output for the log message:
+<programlisting>&lt;DE0005I&gt; Started par 'greenpages' version '@app.version@'. </programlisting>
+</para>
+              </listitem>
+          </orderedlist>
+</para>
+
+</section>
+
+</section>
+
+<section id="installing.greenpages.browsing">
+      <title>Browsing the @greenpages@ application</title>
+      <para>
+          Once installed and started, the @greenpages@ 
+          application can be accessed with a web browser using the address 
+          <ulink url="http://localhost:8080/greenpages">http://localhost:8080/greenpages</ulink>.
+      </para>
+<para>
+    From the home page, a search query can be entered into the search box:
+    <mediaobject>
+        <imageobject role="fo">
+            <imagedata fileref="images/installing-greenpages/browse-1.png" format="PNG" align="center" width="12cm"/>
+        </imageobject>
+        <imageobject role="html">
+            <imagedata fileref="images/installing-greenpages/browse-1.png" format="PNG" align="center"/>
+        </imageobject>
+    </mediaobject>
+</para>
+
+<para>
+    After entering a query into the search box, the results page shows all the matches from the 
+    directory:
+    <mediaobject>
+        <imageobject role="fo">
+            <imagedata fileref="images/installing-greenpages/browse-2.png" format="PNG" align="center" width="12cm"/>
+        </imageobject>
+        <imageobject role="html">
+            <imagedata fileref="images/installing-greenpages/browse-2.png" format="PNG" align="center"/>
+        </imageobject>
+    </mediaobject>
+</para>
+
+<para>
+    Clicking on <emphasis>view</emphasis> next to an entry in the search listing displays the full details for that 
+    listing entry:
+    <mediaobject>
+        <imageobject role="fo">
+            <imagedata fileref="images/installing-greenpages/browse-3.png" format="PNG" align="center" width="12cm"/>
+        </imageobject>
+        <imageobject role="html">
+            <imagedata fileref="images/installing-greenpages/browse-3.png" format="PNG" align="center"/>
+        </imageobject>
+    </mediaobject>
+</para>
+</section>
+
+<section id="installing.greenpages.tools">
+    <title>Running @greenpages@ from Eclipse</title>
+    <para>Using Eclipse and the @webserv@ tools, it is possible to run applications directly from the IDE. 
+      As changes are made to the application in the IDE,
+      they can be automatically applied to the running application allowing for rapid feedback of changes in function.
+    </para>
+
+    <section id="installing.greenpages.tools.importing">
+        <title>Importing the @greenpages@ projects into Eclipse</title>
+        <para>
+            Before starting the @greenpages@ application from Eclipse, import the projects:
+            <orderedlist>
+                <listitem>
+<para>Open the Import Wizard using 
+    <menuchoice><guimenu>File</guimenu><guimenuitem>Import</guimenuitem></menuchoice>.
+</para>
+                  </listitem>
+                  <listitem>
+<para>From the Import Wizard select 
+    <menuchoice><guimenu>General</guimenu><guimenuitem>Existing Projects into Workspace</guimenuitem></menuchoice>
+and click <emphasis>Next</emphasis>:
+    <mediaobject>
+        <imageobject role="fo">
+            <imagedata fileref="images/installing-greenpages/import-projects2.png" format="PNG" align="center" width="8cm"/>
+        </imageobject>
+        <imageobject role="html">
+            <imagedata fileref="images/installing-greenpages/import-projects2.png" format="PNG" align="center"/>
+        </imageobject>
+    </mediaobject>
+</para>
+</listitem>
+                  <listitem>
+<para>Click <guibutton>Browse…</guibutton> and select <code>$GREENPAGES_HOME/solution</code> as the root directory.</para>
+                  </listitem>
+                  <listitem>
+<para>In the <emphasis>Import Projects</emphasis> window, select all the projects and click <emphasis>Finish</emphasis>:
+    <mediaobject>
+        <imageobject role="fo">
+            <imagedata fileref="images/installing-greenpages/import-projects3.png" format="PNG" align="center" width="15cm"/>
+        </imageobject>
+        <imageobject role="html">
+            <imagedata fileref="images/installing-greenpages/import-projects3.png" format="PNG" align="center"/>
+        </imageobject>
+    </mediaobject>
+</para>
+                  </listitem>
+                  <listitem>
+<para>Validate that the imported projects appear in Package Explorer:
+
+    <mediaobject>
+        <imageobject role="fo">
+            <imagedata fileref="images/installing-greenpages/import-projects4.png" format="PNG" align="center" width="5cm"/>
+        </imageobject>
+        <imageobject role="html">
+            <imagedata fileref="images/installing-greenpages/import-projects4.png" format="PNG" align="center"/>
+        </imageobject>
+    </mediaobject>
+    
+There may be compilation errors at this stage.
+</para>
+                  </listitem>
+              </orderedlist>
+          </para>
+      </section>
+      
+      <section id="installing.greenpages.tools.configuring">
+          <title>Configuring @webserv@ target runtime</title>
+          <para>
+              Projects for @webserv@ are associated with a @virgo@ @webserv@ runtime environment in Eclipse. This is to allow
+              launching and testing from within Eclipse, and also to allow classpath construction in Eclipse to
+              mirror the dynamic classpath in the @webserv@ runtime.
+          </para>
+          <para>
+            Compilation errors in the previous step will be resolved here.
+          </para>
+          <para>
+              To configure a @webserv@ runtime environment:
+          </para>
+          <orderedlist>
+              <listitem>
+                  <para>Open <menuchoice><guimenu>Window</guimenu><guisubmenu>Show View</guisubmenu><guimenuitem>Other…</guimenuitem></menuchoice>.</para>
+              </listitem> 
+              <listitem>
+<para>In the <emphasis>Show View</emphasis> dialog choose 
+<menuchoice><guimenu>Server</guimenu><guimenuitem>Servers</guimenuitem></menuchoice> to make the servers view visible:
+    <mediaobject>
+        <imageobject role="fo">
+            <imagedata fileref="images/installing-greenpages/servers.png" format="PNG" align="center" width="6cm"/>
+        </imageobject>
+        <imageobject role="html">
+            <imagedata fileref="images/installing-greenpages/servers.png" format="PNG" align="center"/>
+        </imageobject>
+    </mediaobject>
+</para>
+              </listitem>
+              <listitem>
+<para>Right-click in the <emphasis>Servers</emphasis> (which may not be empty) view and select 
+    <menuchoice><guimenu>New</guimenu><guimenuitem>Server</guimenuitem></menuchoice>.
+</para>
+              </listitem>
+              <listitem>
+<para>In the <emphasis>New Server</emphasis> dialog, choose 
+<menuchoice><guimenu>EclipseRT</guimenu><guimenuitem>Virgo Web Server</guimenuitem></menuchoice> 
+    and click <emphasis>Next</emphasis>.
+</para>
+              </listitem>
+              <listitem>
+<para>Click <guibutton>Browse</guibutton> and select the <code>$VWS_HOME</code> directory. Ensure that a JRE is selected
+supporting Java 1.6 or above.
+Click <guibutton>Finish</guibutton> to complete creation of the server:
+    <mediaobject>
+        <imageobject role="fo">
+            <imagedata fileref="images/installing-greenpages/new-server.png" format="PNG" align="center" width="9cm"/>
+        </imageobject>
+        <imageobject role="html">
+            <imagedata fileref="images/installing-greenpages/new-server.png" format="PNG" align="center"/>
+        </imageobject>
+    </mediaobject>
+</para>
+              </listitem>
+              <listitem>
+<para>Select all projects (except <emphasis>Servers</emphasis>) in <emphasis>Package Explorer</emphasis>.
+Right-click on the projects and choose <guimenuitem>Close Project</guimenuitem> 
+and then <guimenuitem>Open Project</guimenuitem>.
+</para>
+              </listitem>
+          </orderedlist>
+
+<para>
+It is possible that there remain spurious build errors from Eclipse (see the <emphasis>Problems</emphasis> view), in which case
+a project clean build may clear the problems. Select <menuchoice><guimenu>Project</guimenu><guimenuitem>Clean…</guimenuitem></menuchoice>
+from the main menu, and choose to <emphasis>Clean all projects</emphasis>.
+It may be necessary to repeat this on a few projects.
+(This process is sometimes known as the <quote>Eclipse dance</quote>.)
+</para>
+<para>
+Despite the dance steps outlined, there will remain some <emphasis>Warnings</emphasis> like this:
+<mediaobject>
+    <imageobject role="fo">
+        <imagedata fileref="images/installing-greenpages/problem-warning.png" format="PNG" align="center" width="14cm"/>
+    </imageobject>
+    <imageobject role="html">
+        <imagedata fileref="images/installing-greenpages/problem-warning.png" format="PNG" align="center"/>
+    </imageobject>
+</mediaobject>
+It is safe to ignore these.
+</para>
+<para>
+	When the @virgo@ Tooling starts the @webserv@ it uses a &lsquo;warm start&rsquo; by default.
+	It is useful to set the <literal>-clean</literal> option so that every server start is a clean one.
+	This is done by an option on the @webserv@ Overview window, which is obtained by opening the @webserv@ entry in the Servers window. 
+	(Double-click, or right-click and choose Open.)	
+	The check box is labelled &lsquo;Start server with -clean option&rsquo;.
+	Close the window before proceeding.
+</para>
+</section>
+
+<section id="installing.greenpages.tools.run">
+          <title>Running @greenpages@ from within Eclipse</title>
+          <para>
+              Now that @greenpages@ is successfully imported into Eclipse, run the project directly from within the IDE.</para>
+           <para>If the @greenpages@ PAR file was copied to the <literal>pickup</literal> directory, be sure it is now removed so that it does not conflict with the deployment of the Eclipse project.  On Unix:</para>
+	  <programlisting>prompt$ cd $VWS_HOME/pickup
+prompt$ rm greenpages-solution-@app.version@.par</programlisting>
+	
+	  <para>On Windows:</para>
+	  <programlisting>prompt> cd %VWS_HOME%\pickup
+prompt> del greenpages-solution-@app.version@.par</programlisting>
+
+	  <para>Also, to prevent conflicts with the server configured in Eclipse, stop a currently-running @webserv@ by typing <literal>Control-C</literal> in the console window.</para>
+
+          <para>
+              To run @greenpages@ from within Eclipse:
+              <orderedlist>
+                  <listitem>
+                      <para>
+                      Right click on the @webserv@ instance in the <emphasis>Servers</emphasis> view and select the <menuchoice><guimenu>Add and Remove…</guimenu></menuchoice>
+                      menu item.
+     <mediaobject>
+        <imageobject role="fo">
+            <imagedata fileref="images/installing-greenpages/addedtoserver.png" format="PNG" align="center" width="10cm"/>
+        </imageobject>
+        <imageobject role="html">
+            <imagedata fileref="images/installing-greenpages/addedtoserver.png" format="PNG" align="center"/>
+        </imageobject>
+    </mediaobject>
+    </para>
+    </listitem>
+    <listitem><para>
+     Add <emphasis>greenpages-solution</emphasis> (which is the containing project or PAR) to the server and finish.
+    </para></listitem>                     
+                  <listitem>
+                      <para>To start @webserv@ from within Eclipse right-click on the @webserv@ node in the Servers window and choose <guimenuitem>Start</guimenuitem>.
+                      The <emphasis>Servers</emphasis> view should now show the server and the added project:
+    <mediaobject>
+        <imageobject role="fo">
+            <imagedata fileref="images/installing-greenpages/installed.png" format="PNG" align="center" width="14cm"/>
+        </imageobject>
+        <imageobject role="html">
+            <imagedata fileref="images/installing-greenpages/installed.png" format="PNG" align="center"/>
+        </imageobject>
+    </mediaobject>
+                      </para>
+                  </listitem>
+                  <listitem>
+                      <para>
+                          Verify that @greenpages@ is started correctly by checking for 
+                          <code>&lt;DE0005I&gt; Started par 'greenpages' version '@greenpages.version@'.</code> in the Console window.
+    <mediaobject>
+        <imageobject role="fo">
+            <imagedata fileref="images/installing-greenpages/success.png" format="PNG" align="center" width="16cm"/>
+        </imageobject>
+        <imageobject role="html">
+            <imagedata fileref="images/installing-greenpages/success.png" format="PNG" align="center"/>
+        </imageobject>
+    </mediaobject>
+                      </para>
+                  </listitem>
+              </orderedlist>
+          </para>
+          <para>
+          (<emphasis>If errors are shown implying that @greenpages@ failed to be installed, this may be because some dependencies were not
+          copied to @webserv@, as described in <xref linkend="installing.greenpages.building.par.provided"/>. Check this.</emphasis>)
+          </para>
+          
+          <para>Once installed and started @greenpages@ is again available from a web browser at the address 
+              <ulink url="http://localhost:8080/greenpages">http://localhost:8080/greenpages</ulink>.
+          </para>
+      </section>
+  </section>
+
+</chapter>

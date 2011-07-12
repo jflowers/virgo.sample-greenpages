@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<!DOCTYPE appendix PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+    "http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<appendix id="further.resources">
+  <title>Further Resources</title>
+  <section id="further.resources.projects" xreflabel="the appendix Projects">
+    <title>Projects</title>
+    <orderedlist numeration="loweralpha">
+	  <listitem><para>Virgo
+	        (<ulink url="http://www.eclipse.org/virgo">http://www.eclipse.org/virgo</ulink>) — homepage for Virgo.</para>
+	  </listitem>
+      <listitem><para>SpringSource.org
+        (<ulink url="http://www.springsource.org">http://www.springsource.org</ulink>) — homepage for Spring Framework.</para>
+      </listitem>
+      <listitem><para>OSGi
+        (<ulink url="http://www.osgi.org">http://www.osgi.org</ulink>) — homepage for OSGi.</para>
+      </listitem>
+      <listitem><para>H2 Database
+        (<ulink url="http://www.h2database.com">http://www.h2database.com</ulink> — homepage for the H2 database.</para>
+      </listitem>
+      <listitem><para>FreeMarker
+        (<ulink url="http://freemarker.sourceforge.net">http://freemarker.sourceforge.net</ulink>) — homepage for FreeMarker templating
+        engine.</para>
+      </listitem>
+      <listitem><para>Commons DBCP
+        (<ulink url="http://commons.apache.org/dbcp">http://commons.apache.org/dbcp</ulink>) — homepage for Commons DBCP.</para>
+      </listitem>
+      <listitem><para>Eclipse IDE
+        (<ulink url="http://www.eclipse.org/eclipse">http://www.eclipse.org/eclipse</ulink>) — homepage for Eclipse IDE.</para>
+      </listitem>
+      <listitem><para>EclipseLink
+        (<ulink url="http://www.eclipse.org/eclipselink">http://www.eclipse.org/eclipselink</ulink>) — homepage for EclipseLink JPA.</para>
+      </listitem>
+    </orderedlist>
+  </section>
+  <section id="further.resources.documentation">
+    <title>Documentation</title>
+    <orderedlist numeration="loweralpha">
+      <listitem><para>@virgo@ @webserv@ Documentation
+          (<ulink url="http://www.eclipse.org/virgo/documentation">http://www.eclipse.org/virgo/documentation</ulink>) – cover page for all Virgo documentation.
+        </para>
+      </listitem>
+      <listitem><para>Spring DM Reference Guide
+          (<ulink url="http://static.springsource.org/osgi/docs/1.2.0/reference/html/">http://static.springsource.org/osgi/docs/1.2.0/reference/html/</ulink>).
+        </para>
+      </listitem>
+      <listitem><para>Spring Framework 3.0 documentation
+          (<ulink url="http://static.springsource.org/spring/docs/3.0.x/spring-framework-reference/html/">http://static.springsource.org/spring/docs/3.0.x/spring-framework-reference/html/</ulink>).
+        </para>
+      </listitem>
+      <listitem><para>FreeMarker documentation
+          (<ulink url="http://freemarker.sourceforge.net/docs">http://freemarker.sourceforge.net/docs</ulink>).</para>
+      </listitem>
+      <listitem><para>Eclipse IDE documentation
+          (<ulink url="http://www.eclipse.org/documentation">http://www.eclipse.org/documentation</ulink>).</para>
+      </listitem>
+      <listitem><para>EclipseLink documentation wiki
+          (<ulink url="http://wiki.eclipse.org/EclipseLink/UserManual">http://wiki.eclipse.org/EclipseLink/UserManual</ulink>).</para>
+      </listitem>
+      <listitem><para>Maven PAR plugin
+          (<ulink url="http://blog.springsource.com/2009/06/24/maven-par-plugin-100m1/">http://blog.springsource.com/2009/06/24/maven-par-plugin-100m1/</ulink>).</para>
+      </listitem>
+    </orderedlist>
+  </section>
+</appendix>

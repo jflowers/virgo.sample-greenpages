@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="greenpages-guide">
+	
+	<property file="${basedir}/../build.properties"/>
+	<property file="${basedir}/../build.versions"/>
+	<import file="${basedir}/../virgo-build/docbook/default.xml"/>
+
+	<filterset id="docbook.filters">
+		<filter token="bundle.version" value="${bundle.version}"/>
+		<filtersfile file="${basedir}/filters.properties"/>
+	</filterset>
+
+</project>

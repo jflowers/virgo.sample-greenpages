@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN" 
+		"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<book xmlns:xi="http://www.w3.org/2001/XInclude">
+  <bookinfo>
+  <!-- The book title has any trademark and registered trademark symbols literally inserted, since the normal
+  escape doesn't appear to work on pdf output. This solution works on all output formats, now that 
+  the input text is assumed to be Unicode. -->
+  <title>A Guide to the @greenpages@ Sample</title>
+  <titleabbrev>@greenpages@ Guide</titleabbrev>
+	<productname>@greenpages@</productname>
+	<releaseinfo>@greenpages.version@</releaseinfo>
+	<mediaobject>
+		<imageobject role="fo">
+			<imagedata align="center" valign="bottom" fileref="images/virgo-logo-large.png" format="PNG" width="20em"/>
+		</imageobject>
+		<imageobject role="html">
+			<imagedata align="right" valign="bottom" fileref="images/virgo-logo-large.png" format="PNG"/>
+		</imageobject>
+	</mediaobject>
+	<abstract role="fo">
+		<para>
+		Spring application programmers are introduced to @virgo@
+		by installing the @webserv@ and building and running a small application called @greenpages@.
+		Despite its simplicity, @greenpages@ is designed to demonstrate many different @virgo@ features and to
+   		act as a template from which other modular applications can be built.
+		</para>
+        <para>
+        This version of the guide is based on the following software versions:
+        <simplelist type='horiz' columns='3'>
+            <member></member><member><emphasis>@webserv@</emphasis></member><member>@webserv.version@</member>
+            <member></member><member><emphasis>@maven.full@</emphasis></member><member>@maven.version@</member>
+        </simplelist>
+        </para>
+	</abstract>
+
+    <legalnotice>
+        <para>
+            Copyright &copy; 2009, 2011 VMware Inc.
+            <mediaobject>
+                <imageobject role="fo">
+                    <imagedata fileref="images/virgo-logo-small.png" format="PNG" width="20em"/>
+                </imageobject>
+                <imageobject role="html">
+                    <imagedata fileref="images/virgo-logo-small.png" format="PNG"/>
+                </imageobject>
+            </mediaobject>
+        </para>
+        <para>
+            All rights reserved. This document is made available under the terms of the Eclipse Public License v1.0
+			 which is available at
+			 <ulink url="http://www.eclipse.org/legal/epl-v10.html">http://www.eclipse.org/legal/epl-v10.html</ulink>.
+        </para>
+        <para>Java, Sun, and Sun Microsystems
+            are trademarks or registered
+            trademarks of Sun Microsystems, Inc. in the United
+            States and other countries.
+        </para>
+        <para>OSGi is a trademark or a registered trademark of the OSGi Alliance in
+            the United States, other countries, or both.
+        </para>
+        <para>Eclipse is a trademark of Eclipse Foundation, Inc.</para>
+        <para>UNIX is a registered trademark of The Open Group.</para>
+        <para>Windows is a registered trademark of Microsoft Corporation in the
+            United States and other countries.</para>
+    </legalnotice>
+  </bookinfo>
+  
+  <toc />
+    
+  <!-- chapters -->
+  <xi:include href="installing.xml" />
+  <xi:include href="installing-greenpages.xml" />
+  
+  <!-- appendices -->
+  <xi:include href="further-resources.xml" />
+
+</book>
