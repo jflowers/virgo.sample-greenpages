@@ -15,7 +15,7 @@
     <para>Despite its simplicity, @greenpages@ is designed to demonstrate many different @webserv@ features and to
     act as a template from which other modular applications can be built. In particular, @greenpages@ demonstrates: 
     <itemizedlist mark="bullet">
-      <listitem><para>module dependencies with <literal>Import-Package</literal>,</para></listitem>
+      <listitem><para>bundle dependencies with <literal>Import-Package</literal>,</para></listitem>
       <listitem><para>load-time weaving with JPA and AspectJ,</para></listitem>
       <listitem><para>bundle classpath scanning, and</para></listitem>
       <listitem><para>service export, lookup and injection.</para></listitem>
@@ -29,7 +29,7 @@
       <listitem><para>Commons DBCP 1.2.2.</para></listitem>
     </itemizedlist>
     </para>
-	<para>The @greenpages@ application is packaged as a PAR file containing four modules.
+	<para>The @greenpages@ application is packaged as a PAR file containing four bundles.
        <mediaobject>
          <imageobject role="fo">
           <imagedata fileref="images/installing-greenpages/greenpages.png" format="PNG" align="center" width="11cm"/>
@@ -40,20 +40,20 @@
        </mediaobject>
     </para>
     <para>
-        The <literal>greenpages.db</literal> module provides access to an external database and publishes a
+        The <literal>greenpages.db</literal> bundle provides access to an external database and publishes a
 		<literal>javax.sql.DataSource</literal> service.
     </para>
     <para>
-		The <literal>greenpages.app</literal> module exports a <literal>greenpages</literal> package containing
+		The <literal>greenpages.app</literal> bundle exports a <literal>greenpages</literal> package containing
 		<literal>Directory</literal> and <literal>Listing</literal> interfaces.
     </para>
     <para>
-		The <literal>greenpages.jpa</literal> module imports the <literal>greenpages</literal> package and
+		The <literal>greenpages.jpa</literal> bundle imports the <literal>greenpages</literal> package and
 		uses the <literal>javax.sql.DataSource</literal> service to
 		access the external database and publishes its contents as a <literal>greenpages.Directory</literal> service.
     </para>
     <para>
-		The <literal>greenpages.web</literal> module imports the <literal>greenpages</literal> package and uses the
+		The <literal>greenpages.web</literal> web application bundle imports the <literal>greenpages</literal> package and uses the
 		<literal>greenpages.Directory</literal> service to respond to web requests.
     </para>
   </section>
@@ -98,7 +98,7 @@ prompt$ export GREENPAGES_HOME=/opt/springsource/samples/@greenpages.expanded.di
     <title>Building and installing @greenpages@</title>
     <section id="installing.greenpages.building.mvn">
       <title>Building with @maven.full@</title>
-<para>@greenpages@ uses @maven.full@ as its primary build system. Each module of the application can be built
+<para>@greenpages@ uses @maven.full@ as its primary build system. Each bundle of the application can be built
     separately and the entire application can built and assembled into a PAR file from a single location.
     To build the application and assemble it into a PAR
     file:

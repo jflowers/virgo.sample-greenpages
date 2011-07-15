@@ -40,7 +40,7 @@
 			<version>${project.version}</version>
 			<type>war</type>
 		</dependency>
-		<!-- Required for the web bundle as dependancies are not propagated up from war build types -->
+		<!-- Required for the web bundle as dependencies are not propagated up from war build types -->
 		<dependency>
 			<groupId>org.freemarker</groupId>
 			<artifactId>com.springsource.freemarker</artifactId>

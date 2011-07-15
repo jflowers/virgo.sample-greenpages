@@ -22,8 +22,11 @@
 		<para>
 		Spring application programmers are introduced to @virgo@
 		by installing the @webserv@ and building and running a small application called @greenpages@.
+		</para>
+    	<para>
 		Despite its simplicity, @greenpages@ is designed to demonstrate many different @virgo@ features and to
    		act as a template from which other modular applications can be built.
+		This guide highlights areas of interest in the sample code.
 		</para>
         <para>
         This version of the guide is based on the following software versions:
@@ -71,6 +74,7 @@
   <!-- chapters -->
   <xi:include href="installing.xml" />
   <xi:include href="installing-greenpages.xml" />
+  <xi:include href="highlights.xml" />
   
   <!-- appendices -->
   <xi:include href="further-resources.xml" />

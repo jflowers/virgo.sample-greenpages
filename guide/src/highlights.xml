@@ -1,0 +1,586 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
+		"http://www.oasis-open.org/docbook/xml/4.5/docbookx.dtd">
+<chapter id="highlights">
+<title>@greenpages@ Highlights</title>
+
+<para>
+This chapter picks out some notable features of the @greenpages@ sample code from the <literal>solution</literal> folder.
+</para>
+
+<section id="highlights.wab">
+	<title>Web Application Bundle Highlights</title>
+	
+	<para>
+		The @greenpages@ Web Application Bundle (WAB) is built using Spring MVC configured with Spring annotations and component
+		scanning. The Bundlor tool is used to generate the bundle manifest of the WAB and a service is injected into the code
+		using Spring DM in combination with Spring autowiring.
+	</para>
+
+	<para>
+		For more information on Spring, Spring MVC, and Spring DM, please see the Appendix. 
+	</para>
+	
+	<section>
+		<title>web.xml</title>
+		
+		<para>
+			The web deployment descriptor file <literal>web.xml</literal> is in the <literal>src/main/webapp/WEB_INF</literal> folder of the
+			<literal>greenpages.web</literal> project.
+			It defines a servlet, a servlet context parameter, and a servlet context listener.
+		</para>
+
+		<para>
+			Spring's dispatcher servlet is used to dispatch web requests to handlers.
+<programlisting languages="xml"><![CDATA[  <servlet>
+  <servlet-name>greenpages</servlet-name>
+  <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+  </servlet>]]>
+</programlisting>
+		</para>
+		
+		<para>
+			The <literal>contextClass</literal> servlet parameter declares the implementation of <interfacename>WebApplicationContext</interfacename>
+			that Spring instantiates.
+			The application context acts as a root application context and each servlet in the web application, which in the case of @greenpages@ is
+			just the dispatcher servlet, has its own application context which is a child of the root application context.
+			<classname>ServerOsgiBundleXmlWebApplicationContext</classname> is provided by @virgo@ and will hold beans created by Spring DM, which
+			are then available in child application contexts.
+<programlisting languages="xml"><![CDATA[  <context-param>
+    <param-name>contextClass</param-name>
+    <param-value>org.eclipse.virgo.web.dm.ServerOsgiBundleXmlWebApplicationContext</param-value>
+  </context-param>
+]]>
+</programlisting>
+		</para>
+		
+		<para>
+			A servlet context listener is defined which will start up the root application context for the web application when the servlet context
+			is initialised.
+<programlisting languages="xml"><![CDATA[  <listener>
+    <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+  </listener>
+]]>
+</programlisting>
+		</para>
+		
+	</section>
+
+	<section>
+		<title>Controller Class</title>
+		<para>
+			In the <literal>src/main/java</literal> source folder of the <literal>greenpages.web</literal> project 
+			the package <classname>greenpages.web</classname>
+			contains the controller class <classname>GreenPagesController</classname>.
+		</para>
+		<para>
+			Spring annotations are used to add web behaviour to the class.
+			The <classname>@Controller</classname> annotation tells Spring that the class serves the role of a controller and that the
+			class should be scanned for <emphasis>request mappings</emphasis>.
+			Request mappings are defined using the <classname>@RequestMapping</classname> annotation.
+			For instance, the URL <literal>/home.htm</literal> is mapped to the handler method <literal>home</literal>.
+<programlisting language="java"><![CDATA[@Controller
+public class GreenPagesController {
+	…
+    @RequestMapping("/home.htm")
+    public void home() {
+    }
+    …]]>
+</programlisting>
+			Note that request mappings can also be specified at the class level.
+		</para>
+	</section>
+
+	<section>
+		<title>Component Scanning</title>
+		<para>
+			Spring will detect the <classname>@Controller</classname> annotation and create a bean of type controller, 
+			<emphasis>provided that</emphasis> it scans the classpath for these.
+			Spring&rsquo;s component scanning is enabled by the presence of a <literal>context</literal> tag 
+			in one of the Spring bean definition files.
+		</para>
+		<para>
+			The <filename>WEB-INF/greenpages-servlet.xml</filename> file in the
+			<literal>src/main/webapp</literal> folder contains the following lines:
+<programlisting language="xml"><![CDATA[	<!-- enable classpath scanning -->
+	<context:component-scan base-package="greenpages.web" />]]>
+</programlisting>
+			Notice the convention embodied in the filename <filename>WEB-INF/greenpages-servlet.xml</filename>.
+			During dispatcher servlet initialisation, Spring looks for a file named <literal>[servlet-name]-servlet.xml</literal>
+			in the <literal>WEB-INF</literal> directory of the web application and creates the beans defined there.
+		</para>
+	</section>
+
+	<section>
+		<title>Bundle Manifest</title>
+			<para>
+				The @webserv@ has special support for WABs.
+				To take advantage of this support, the <literal>greenpages.web</literal> bundle must be declared to be a WAB and a
+				context path must be defined.
+			</para>
+			<para>
+				The Bundlor template (the file <filename>template.mf</filename> at the top level under the <literal>greenpages.web</literal> project)
+				is input to the Bundlor tool which generates the manifest of the bundle.
+			</para>
+			<para>		
+				The Bundlor template defines the context path as follows (and this declares the bundle to be a WAB):
+<programlisting><![CDATA[Web-ContextPath: greenpages]]>
+</programlisting>
+			</para>
+			<para>
+				The Bundlor template also ensures Spring packages and greenpages packages from other bundles are imported with suitable version ranges:
+<programlisting><![CDATA[Import-Template: 
+ org.springframework.*;version="[3.0, 3.1)",
+ greenpages.*;version="[2.3, 2.4)"]]>
+</programlisting>
+			</para>
+	</section>
+	
+	<section>
+		<title>Service Injection</title>
+			<para>
+				The file <filename>webapp/WEB-INF/applicationContext.xml</filename> declares a reference to a
+				<interfacename>greenpages.Directory</interfacename> service in the service registry using Spring DM as follows:
+<programlisting language="xml"><![CDATA[	<osgi:reference id="directory" interface="greenpages.Directory"/>]]>
+</programlisting>
+				The resultant bean resides in the root web application context.
+			</para>
+			<para>
+				The <classname>GreenPagesController</classname> class uses Spring autowiring to inject the service:
+<programlisting language="java"><![CDATA[	@Autowired
+	private Directory directory;]]>
+</programlisting>
+				The controller's bean resides in the web application context associated with the Spring dispatcher servlet and so has
+				access to the directory service bean in the root web application context.
+			</para>
+	</section>
+	
+</section>
+
+<section id="highlights.middletier">
+	<title>Middle Tier Highlights</title>
+
+	<para>
+		In the middle tier of @greenpages@, the DataSource bundle <literal>greenpages.db</literal> constructs a DataSource and
+		publishes it in the service registry and the JPA bundle <literal>greenpages.jpa</literal> uses the datasource to define a JPA entity manager
+		which provides an object-relational	mapping between directory listings and the database.
+		The JPA bundle also uses declarative transaction management to ensure its persistence operations are performed inside transactions.
+	</para>
+	
+	<section>
+		<title>DataSource</title>
+		
+		<para>
+			The file <filename>src/main/resources/META-INF/spring/module-context.xml</filename> in the <literal>greenpages.db</literal> project
+			declares the Spring <emphasis>p-namespace</emphasis>:
+<programlisting language="xml"><![CDATA[<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd"
+	xmlns:p="http://www.springframework.org/schema/p">]]>
+</programlisting>
+			which is then used to define properties of a datasource bean:
+<programlisting language="xml"><![CDATA[	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" 
+	 		p:driverClassName="org.h2.Driver" p:url="jdbc:h2:~/greenpages-db/greenpages"
+	 		p:username="greenpages" p:password="pass"
+	 		init-method="createDataSource" destroy-method="close"/>]]>
+</programlisting>
+		</para>
+		<para>
+			The file <filename>src/main/resources/META-INF/spring/osgi-context.xml</filename> publishes the datasource bean as a service in the
+			service registry using Spring DM:
+<programlisting language="xml"><![CDATA[	<osgi:service ref="dataSource" interface="javax.sql.DataSource"/>]]>
+</programlisting>
+		</para>
+	</section>
+	
+	<section>
+		<title>EntityManager</title>
+		
+		<para>
+			The <classname>greenpages.jpa.JpaDirectory</classname> class in the folder <filename>src/main/java</filename> of the
+			<literal>greenpages.jpa</literal> project uses the <literal>@Repository</literal> annotation to make it eligible for Spring DataAccessException translation
+			(which abstracts implementation-specific persistence exceptions to protect the application from details of the persistence implementation):
+<programlisting language="java"><![CDATA[@Repository
+final class JpaDirectory implements Directory {]]>
+</programlisting>
+			and also declares an entity manager which will be injected by Spring:
+<programlisting language="java"><![CDATA[    @PersistenceContext
+    private EntityManager em;]]>
+</programlisting>
+		</para>
+		<para>
+			The file <filename>src/main/resources/META-INF/spring/module-context.xml</filename> in the <literal>greenpages.jpa</literal> project
+			declares an entity manager factory based on EclipseLink JPA:
+<programlisting language="xml"><![CDATA[	<bean id="entityManagerFactory"
+	  class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean" 
+	  p:dataSource-ref="dataSource">
+		<property name="jpaVendorAdapter">
+			<bean id="jpaVendorAdapter"
+				class="org.springframework.orm.jpa.vendor.EclipseLinkJpaVendorAdapter"
+				p:databasePlatform="org.eclipse.persistence.platform.database.HSQLPlatform"
+				p:showSql="true"/>
+		</property>
+	</bean>]]>
+</programlisting>
+		</para>
+		<para>
+			The same file enables scanning for annotations, including <literal>@PersistenceContext</literal>:
+<programlisting language="xml"><![CDATA[	<context:annotation-config/>]]>
+</programlisting>
+			enables load-time weaving, which is needed by the entity manager factory:
+<programlisting language="xml"><![CDATA[	<context:load-time-weaver aspectj-weaving="on"/>]]>
+</programlisting>
+			and specifies a bean post processor to perform exception translation for <literal>@Repository</literal> classes:
+<programlisting language="xml"><![CDATA[	<bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor"/>]]>
+</programlisting>
+		</para>
+		<para>
+			The file <filename>src/main/resources/META-INF/persistence.xml</filename> defines a persistence unit for a <classname>JpaListing</classname>
+			directory listing class.
+<programlisting language="xml"><![CDATA[<persistence xmlns="http://java.sun.com/xml/ns/persistence"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
+		http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd"
+		version="1.0">
+
+	<persistence-unit name="GreenPages" transaction-type="RESOURCE_LOCAL">
+		<class>greenpages.jpa.JpaListing</class>
+	</persistence-unit>
+
+</persistence>]]>
+</programlisting>
+		</para>
+		<para>
+			The file <filename>src/main/resources/META-INF/orm.xml</filename> defines an entity mapping for the <classname>JpaListing</classname> class.
+<programlisting language="xml"><![CDATA[<entity-mappings xmlns="http://java.sun.com/xml/ns/persistence/orm"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/persistence/orm
+	http://java.sun.com/xml/ns/persistence/orm_1_0.xsd"
+    version="1.0">
+    <package>greenpages.jpa</package>
+    <entity class="greenpages.jpa.JpaListing" name="Listing">
+        <table name="LISTING"/>
+        <attributes>
+            <id name="listingNumber">
+                <column name="LISTING_NUMBER"/>
+                <generated-value strategy="TABLE"/>
+            </id>
+            <basic name="firstName">
+                <column name="FIRST_NAME"/>
+            </basic>
+            …
+        </attributes>
+    </entity>
+</entity-mappings>]]>
+</programlisting>
+		</para>
+	</section>
+
+		
+	<section>
+		<title>Transaction Management</title>
+		
+		<para>
+			The <classname>greenpages.jpa.JpaDirectory</classname> class in the folder <filename>src/main/java</filename> of the
+			<literal>greenpages.jpa</literal> project uses the <literal>@Transactional</literal> annotation to provide transaction demarcation
+			(beginning and committing a transaction around each method in this case):
+<programlisting language="java"><![CDATA[@Transactional
+…
+final class JpaDirectory implements Directory {]]>
+</programlisting>
+		</para>
+		<para>
+			The file <filename>src/main/resources/META-INF/spring/module-context.xml</filename> enables AspectJ weaving for transaction demarcation:
+<programlisting language="xml"><![CDATA[	<tx:annotation-driven mode="aspectj"/>]]>
+</programlisting>
+			and specifies that the Spring <classname>JpaTransactionManager</classname> should be used and associated with the entity manager factory:
+<programlisting language="xml"><![CDATA[	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager"
+			p:entityManagerFactory-ref="entityManagerFactory"/>]]>
+</programlisting>
+		</para>
+
+	</section>
+	
+</section>
+
+<section id="highlights.testing">
+	<title>Testing Highlights</title>
+	<para>
+		Testing is one of the most important aspects of software development. Without testing it would be difficult
+		to determine if a piece of code worked properly, changes would have undetected consequences, and the quality
+		of products would generally be lower.
+	</para>
+	<para>
+		There are two major categories of testing generally recognised today: unit testing 
+		and integration testing. In the context of the
+		@greenpages@ application, <emphasis>unit testing</emphasis> means testing a single class in isolation from other application code.
+		This type of testing does not change at all when developing for @virgo@.
+	</para>
+	<para>
+		In our application <emphasis>integration testing</emphasis> means testing an application or
+		portion of an application with other code. This kind of testing does look a bit different when developing
+		for @virgo@. In most cases @virgo@ applications are made up of small bundles that consume services through the
+		OSGi registry. The following highlights show how a single bundle and the entire @greenpages@
+		application are integration tested outside the container.
+	</para>
+	
+	<section>
+		<title>Single Bundle Integration Test</title>
+		<para>
+			One of the most common forms of integration testing is ensuring that the object relational mapping in an
+			application is working properly. This kind of testing typically uses a data access object to retrieve data
+			from a live database.
+		</para>
+		
+		<para>
+			The <classname>greenpages.jpa.JpaDirectorySpringContextTests</classname> class in the
+			<filename>src/test/java</filename> source folder of the <literal>greenpages.jpa</literal> project
+			is such a test case for the <classname>JpaDirectory</classname>class.
+			The	class uses JUnit to run the test and tests that a directory search completes 
+			correctly. Rather than instantiate
+			this class directly in the test, the Spring Test Framework is used to instantiate and inject a
+			<classname>JpaDirectory</classname> based on the <literal>META-INF/spring/module-context.xml</literal> file.
+			Spring Test Framework declarations are used to run the test with the
+			<classname>SpringJunit4ClassRunner</classname> and configure the test with the
+			<literal>classpath:/META-INF/spring/module-context.xml</literal> file:
+<programlisting language="java"><![CDATA[@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = { "classpath:/META-INF/spring/module-context.xml",
+    "classpath:/META-INF/spring/test-context.xml" })
+@TestExecutionListeners(value = DependencyInjectionTestExecutionListener.class)
+public class JpaDirectorySpringContextTests {
+
+    @Autowired
+    private Directory directory;
+
+    @Test
+    public void search() {]]>
+</programlisting>
+		</para>
+		
+		<para>
+			The <filename>test-context.xml</filename> file in the
+			<literal>src/test/resources/META-INF/spring</literal> folder defines two beans: a
+			<interfacename>DataSource</interfacename> and a <classname>TestDataPopulator</classname>: 
+<programlisting language="xml"><![CDATA[    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+        p:driverClassName="org.h2.Driver" p:url="jdbc:h2:.~/greenpages-db/greenpages"
+        p:username="greenpages" p:password="pass" init-method="createDataSource"
+        destroy-method="close" />
+
+    <bean class="greenpages.jpa.TestDataPopulator" init-method="populate">
+        <constructor-arg ref="dataSource" />
+        <constructor-arg value="file:../../db/db.sql" />
+    </bean>]]>
+</programlisting>
+			These two beans	provide a test <interfacename>DataSource</interfacename> complete with test data.
+		</para>
+				
+	</section>
+
+	<section>
+		<title>Multi Bundle Integration Test</title>
+		<para>
+			The single bundle integration test provided a test implementation of its <interfacename>DataSource</interfacename> dependency.
+			When integration testing, it is often a good idea to test the entire application outside of the container.
+			@greenpages@ includes such a test case for the
+			entire application, starting with the <classname>GreenPagesController</classname> class
+			and descending all the way to a database.
+			Although it would be sensible for this test case to reside in a separate test bundle,
+			one of the bundles involved is a web bundle and so the test case is located in the <literal>greenpages.web</literal> project.
+		</para>
+		<para>
+			Since this test case will be testing the @greenpages@ application as a whole, it needs to depend on the bundles
+			that make up the application.
+			The <filename>pom.xml</filename> file for the <literal>greenpages.web</literal>
+			project contains a dependency declaration for the <literal>greenpages.jpa</literal> bundle:
+<programlisting language="xml"><![CDATA[        <dependency>
+            <groupId>com.springsource.dmserver</groupId>
+            <artifactId>greenpages.jpa</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>]]>
+</programlisting>
+			Note that the scope of the dependency is <literal>test</literal>.
+		</para>
+		<para>
+			The <classname>GreenPagesSpringContextTests</classname> class in the
+			<literal>src/test/java/greenpages/web</literal> folder
+			contains Spring Test Framework declarations to run the test with the
+			<classname>SpringJunit4ClassRunner</classname> and configure the test with the files
+			<literal>classpath*:/META-INF/spring/module-context.xml</literal>,
+			<literal>file:src/main/webapp/WEB-INF/greenpages-servlet.xml</literal> and
+			<literal>classpath:/META-INF/spring/test-context.xml</literal>. Note the use of
+			<literal>classpath*:</literal> which causes Spring to look for files that match that path in all of the bundles on the classpath.
+<programlisting language="java"><![CDATA[@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {
+        "classpath*:/META-INF/spring/module-context.xml",
+        "file:src/main/webapp/WEB-INF/greenpages-servlet.xml",
+        "classpath:/META-INF/spring/test-context.xml" })
+@TestExecutionListeners(value = DependencyInjectionTestExecutionListener.class)
+public class @greenpages@SpringContextTests {]]>
+</programlisting>
+		</para>
+
+	</section>
+	
+</section>
+
+<section id="highlights.automated.build">
+	<title>Automated Build Highlights</title>
+	<para>
+		One of the most important components in application development is the automated build. This permits
+		application artifacts to be created outside of the developer&rsquo;s IDE. The application can then be
+		created and tested in a variety of environments, including continuous integration servers.
+	</para>
+
+	<section>
+		<title>Building the PAR</title>
+		<para>
+			All of the @greenpages@ projects have Maven POM files for building.
+			The PAR is built using the file <filename>pom.xml</filename> in the <literal>greenpages</literal> folder.
+			This file defines a parent POM and a <literal>packaging</literal> type of <literal>par</literal>:
+<programlisting language="xml"><![CDATA[	<parent>
+		<groupId>org.eclipse.virgo</groupId>
+		<artifactId>greenpages.parent-solution</artifactId>
+		<version>2.4.0.RELEASE</version>
+		<relativePath>../parent</relativePath>
+	</parent>
+
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.eclipse.virgo</groupId>
+	<artifactId>greenpages-solution</artifactId>
+	<name>GreenPages PAR</name>
+	<description>GreenPages PAR</description>
+	<packaging>par</packaging>]]>
+</programlisting>
+		</para>
+		
+		<para>
+			Thorsten Maus created a Maven plugin (see <xref linkend="further.resources.documentation"/>) 
+			that builds a PAR file from a list of dependencies.
+			The file <filename>pom.xml</filename> lists those dependencies:
+<programlisting language="xml"><![CDATA[	<dependencies>
+		<dependency>
+			<groupId>org.eclipse.virgo</groupId>
+			<artifactId>greenpages.app-solution</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.virgo</groupId>
+			<artifactId>greenpages.jpa-solution</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.virgo</groupId>
+			<artifactId>greenpages.db-solution</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.virgo</groupId>
+			<artifactId>greenpages.web-solution</artifactId>
+			<version>${project.version}</version>
+			<type>war</type>
+		</dependency>
+		<dependency>
+			<groupId>org.freemarker</groupId>
+			<artifactId>com.springsource.freemarker</artifactId>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>]]>
+</programlisting>
+			The freemarker dependency is required to ensure the Web Application Bundle 
+			has the correct set of dependencies as well as the other bundles.
+			Most dependencies are resolved 
+			transitively from the bundle projects, but the &lsquo;war&rsquo; project does not pass on its dependencies; 
+			it expects 
+			them to be contained in its <literal>lib</literal> directory. 
+		</para>
+		<para>
+			The <literal><![CDATA[<build><plugins>…</plugins></build>]]></literal> section contains a declaration for the
+			<literal>par</literal> plugin and configuration of the application symbolic name of the PAR:
+<programlisting language="xml"><![CDATA[<plugin>
+	<groupId>org.apache.maven.plugins</groupId>
+	<artifactId>maven-par-plugin</artifactId>
+	<version>1.0.0.RELEASE</version>
+	<configuration>
+		<applicationSymbolicName>greenpages</applicationSymbolicName>
+	</configuration>
+</plugin>]]>
+</programlisting>
+		</para>
+	</section>
+
+	<section>
+		<title>Obtaining Dependencies</title>
+		<para>
+			The Maven <literal>dependency</literal> plugin is used to collect the transitive dependency graph for the PAR.
+		</para>	
+		<para>
+			The <literal><![CDATA[<build><plugins>…</plugins></build>]]></literal> section 
+			has a declaration for the <literal>dependency</literal> plugin:
+<programlisting language="xml"><![CDATA[<plugin>
+  <groupId>org.apache.maven.plugins</groupId>
+  <artifactId>maven-dependency-plugin</artifactId>
+  <executions>
+    <execution>
+      <id>copy-dependencies</id>
+      <phase>package</phase>
+      <goals>
+        <goal>copy-dependencies</goal>
+      </goals>
+      <configuration>
+        <outputDirectory>${project.build.directory}/par-provided</outputDirectory>
+        <overWriteIfNewer>true</overWriteIfNewer>
+		<excludeGroupIds>org.eclipse.virgo,org.apache.log4j</excludeGroupIds>
+      </configuration>
+    </execution>
+  </executions>
+</plugin>]]>
+</programlisting>
+		</para>
+		<para>
+			The WAB must be prevented from having its dependencies included in a <literal>lib</literal> directory as they will be provided 
+			by the runtime enviroment. The <literal>greenpages.web</literal> POM file contains the following:
+<programlisting language="xml"><![CDATA[<build>
+	<plugins>
+		<plugin>
+			<artifactId>maven-war-plugin</artifactId>
+			<version>2.1-beta-1</version>
+			<configuration>
+				<packagingExcludes>WEB-INF/lib/**</packagingExcludes>
+			</configuration>
+		</plugin>
+	</plugins>
+</build>]]></programlisting> 
+		</para>
+	</section>
+	
+	<section>
+		<title>Automatically Running the Tests</title>
+		
+		<para>
+			The following plug-in entry in the <literal>pom.xml</literal> file in the <literal>parent</literal>
+			directory ensure that the tests	are run as part of the build:
+<programlisting language="xml"><![CDATA[<plugin>
+	<groupId>org.apache.maven.plugins</groupId>
+	<artifactId>maven-surefire-plugin</artifactId>
+	<configuration>
+		<includes>
+			<include>**/*Tests.java</include>
+		</includes>
+		<excludes>
+			<exclude>**/Abstract*.java</exclude>
+		</excludes>
+		<junitArtifactName>org.junit:com.springsource.org.junit</junitArtifactName>
+		<argLine>-javaagent:${user.home}/.m2/repository/…</argLine>
+	</configuration>
+</plugin>]]>
+</programlisting>
+			The location of the user's Maven repository is hard-coded.
+		</para>
+		
+	</section>
+	
+</section>
+
+</chapter>

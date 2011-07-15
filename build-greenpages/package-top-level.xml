@@ -15,10 +15,6 @@
 			<property name="docbook.output.dir" value="${package.docs.dir}"/>
 		</all-bundles>
 		
-		<!-- <copy todir="${package.output.dir}">
-			<fileset dir="${basedir}/../guide/target"/>
-		</copy> -->
-
 		<copy todir="${package.output.dir}">
 			<fileset dir="${basedir}/..">
 				<include name="db/**"/>
