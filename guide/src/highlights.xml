@@ -309,13 +309,13 @@ final class JpaDirectory implements Directory {]]>
 	<para>
 		Testing is one of the most important aspects of software development. Without testing it would be difficult
 		to determine if a piece of code worked properly, changes would have undetected consequences, and the quality
-		of products would generally be lower.
+		of the code would generally be lower.
 	</para>
 	<para>
 		There are two major categories of testing generally recognised today: unit testing 
 		and integration testing. In the context of the
 		@greenpages@ application, <emphasis>unit testing</emphasis> means testing a single class in isolation from other application code.
-		This type of testing does not change at all when developing for @virgo@.
+		This type of testing does not change at all when developing for @virgo@ and so the @greenpages@ sample does not include any unit tests.
 	</para>
 	<para>
 		In our application <emphasis>integration testing</emphasis> means testing an application or
@@ -336,14 +336,15 @@ final class JpaDirectory implements Directory {]]>
 		<para>
 			The <classname>greenpages.jpa.JpaDirectorySpringContextTests</classname> class in the
 			<filename>src/test/java</filename> source folder of the <literal>greenpages.jpa</literal> project
-			is such a test case for the <classname>JpaDirectory</classname>class.
+			is such a test case for the <classname>JpaDirectory</classname> class.
 			The	class uses JUnit to run the test and tests that a directory search completes 
 			correctly. Rather than instantiate
 			this class directly in the test, the Spring Test Framework is used to instantiate and inject a
-			<classname>JpaDirectory</classname> based on the <literal>META-INF/spring/module-context.xml</literal> file.
+			<classname>JpaDirectory</classname> bean defined in the <literal>META-INF/spring/module-context.xml</literal> file.
 			Spring Test Framework declarations are used to run the test with the
-			<classname>SpringJunit4ClassRunner</classname> and configure the test with the
-			<literal>classpath:/META-INF/spring/module-context.xml</literal> file:
+			<classname>SpringJunit4ClassRunner</classname> and configure the test with the files
+			<literal>classpath:/META-INF/spring/module-context.xml</literal> and
+			<literal>classpath:/META-INF/spring/test-context.xml</literal>:
 <programlisting language="java"><![CDATA[@RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:/META-INF/spring/module-context.xml",
     "classpath:/META-INF/spring/test-context.xml" })
@@ -380,13 +381,13 @@ public class JpaDirectorySpringContextTests {
 	<section>
 		<title>Multi Bundle Integration Test</title>
 		<para>
-			The single bundle integration test provided a test implementation of its <interfacename>DataSource</interfacename> dependency.
+			The single bundle integration test provides a test implementation of its <interfacename>DataSource</interfacename> dependency.
 			When integration testing, it is often a good idea to test the entire application outside of the container.
 			@greenpages@ includes such a test case for the
 			entire application, starting with the <classname>GreenPagesController</classname> class
 			and descending all the way to a database.
 			Although it would be sensible for this test case to reside in a separate test bundle,
-			one of the bundles involved is a web bundle and so the test case is located in the <literal>greenpages.web</literal> project.
+			one of the bundles involved is a web bundle and so it is more convenient to locate the test case in the <literal>greenpages.web</literal> project.
 		</para>
 		<para>
 			Since this test case will be testing the @greenpages@ application as a whole, it needs to depend on the bundles
@@ -428,7 +429,7 @@ public class @greenpages@SpringContextTests {]]>
 <section id="highlights.automated.build">
 	<title>Automated Build Highlights</title>
 	<para>
-		One of the most important components in application development is the automated build. This permits
+		Another important aspect of application development is automated build. This permits
 		application artifacts to be created outside of the developer&rsquo;s IDE. The application can then be
 		created and tested in a variety of environments, including continuous integration servers.
 	</para>
@@ -438,7 +439,7 @@ public class @greenpages@SpringContextTests {]]>
 		<para>
 			All of the @greenpages@ projects have Maven POM files for building.
 			The PAR is built using the file <filename>pom.xml</filename> in the <literal>greenpages</literal> folder.
-			This file defines a parent POM and a <literal>packaging</literal> type of <literal>par</literal>:
+			This file defines a parent POM and a packaging type of <literal>par</literal>:
 <programlisting language="xml"><![CDATA[	<parent>
 		<groupId>org.eclipse.virgo</groupId>
 		<artifactId>greenpages.parent-solution</artifactId>
@@ -488,8 +489,7 @@ public class @greenpages@SpringContextTests {]]>
 		</dependency>
 	</dependencies>]]>
 </programlisting>
-			The freemarker dependency is required to ensure the Web Application Bundle 
-			has the correct set of dependencies as well as the other bundles.
+			The freemarker dependency is required to ensure the Web Application Bundle has the correct set of dependencies.
 			Most dependencies are resolved 
 			transitively from the bundle projects, but the &lsquo;war&rsquo; project does not pass on its dependencies; 
 			it expects 
@@ -560,7 +560,7 @@ public class @greenpages@SpringContextTests {]]>
 		
 		<para>
 			The following plug-in entry in the <literal>pom.xml</literal> file in the <literal>parent</literal>
-			directory ensure that the tests	are run as part of the build:
+			directory ensure that the concrete test classes are run as part of the build:
 <programlisting language="xml"><![CDATA[<plugin>
 	<groupId>org.apache.maven.plugins</groupId>
 	<artifactId>maven-surefire-plugin</artifactId>
