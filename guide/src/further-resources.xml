@@ -9,6 +9,12 @@
 	  <listitem><para>Virgo
 	        (<ulink url="http://www.eclipse.org/virgo">http://www.eclipse.org/virgo</ulink>) — homepage for Virgo.</para>
 	  </listitem>
+	  <listitem><para>Bundlor
+	        (<ulink url="http://www.springsource.org/bundlor">http://www.springsource.org/bundlor</ulink>) — homepage for Bundlor manifest generation tool.
+					Note that Bundlor has been donated to Eclipse and may a development milestone be downloaded from
+					<ulink url="http://www.eclipse.org/virgo/download">http://www.eclipse.org/virgo/download</ulink>.
+				</para>
+	  </listitem>
       <listitem><para>SpringSource.org
         (<ulink url="http://www.springsource.org">http://www.springsource.org</ulink>) — homepage for Spring Framework.</para>
       </listitem>

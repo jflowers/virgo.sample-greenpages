@@ -8,8 +8,6 @@
   the input text is assumed to be Unicode. -->
   <title>A Guide to the @greenpages@ Sample</title>
   <titleabbrev>@greenpages@ Guide</titleabbrev>
-	<productname>@greenpages@</productname>
-	<releaseinfo>@greenpages.version@</releaseinfo>
 	<mediaobject>
 		<imageobject role="fo">
 			<imagedata align="center" valign="bottom" fileref="images/virgo-logo-large.png" format="PNG" width="20em"/>
@@ -31,6 +29,7 @@
         <para>
         This version of the guide is based on the following software versions:
         <simplelist type='horiz' columns='3'>
+			<member></member><member><emphasis>@greenpages@ Sample</emphasis></member><member>@greenpages.version@</member>
             <member></member><member><emphasis>@webserv@</emphasis></member><member>@webserv.version@</member>
             <member></member><member><emphasis>@maven.full@</emphasis></member><member>@maven.version@</member>
         </simplelist>
@@ -39,7 +38,7 @@
 
     <legalnotice>
         <para>
-            Copyright &copy; 2009, 2011 VMware Inc.
+            Copyright &copy; 2011 VMware Inc.
             <mediaobject>
                 <imageobject role="fo">
                     <imagedata fileref="images/virgo-logo-small.png" format="PNG" width="20em"/>

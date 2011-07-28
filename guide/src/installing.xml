@@ -26,10 +26,13 @@ is set to the root directory of the JDK.
 <title>Installing @webserv@</title>
 
 <para>
-Unzip the @webserv@ zip file. On Windows<trademark class="trade"/> operating systems, ensure you unzip this near the root of a drive to avoid issues with long path names.
+Unzip the @webserv@ Zip file.
+Ensure the destination path does not contain spaces.
+On Windows<trademark class="trade"/> operating systems, ensure you unzip this near the root of a drive to avoid issues with long path names.
 </para>
 <para>
 Please refer to the Virgo User Guide for full installation instructions.
+See <link linkend="further.resources.documentation">Documentation</link>.
 </para>
 
 </section>
@@ -43,6 +46,7 @@ This is necessary only if you would like to run the sample under Eclipse.
 </para>
 <para>
 Please refer to the Virgo Programmer Guide for installation instructions.
+See <link linkend="further.resources.documentation">Documentation</link>.
 </para>
 
 </section>
