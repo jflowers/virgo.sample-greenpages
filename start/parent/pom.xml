@@ -17,7 +17,7 @@
 			    <groupId>org.springframework</groupId>
 			    <artifactId>org.springframework.spring-library</artifactId>
 			    <type>libd</type>
-			    <version>3.0.0</version>
+			    <version>3.0.5.RELEASE</version>
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
@@ -36,7 +36,7 @@
 			    <groupId>javax.persistence</groupId>
 			    <artifactId>com.springsource.javax.persistence</artifactId>
 			    <version>1.0.0</version>
-				<scope>compile</scope>
+				<scope>provided</scope>
 			</dependency>
 			<dependency>
 			    <groupId>org.eclipse.persistence</groupId>
@@ -60,7 +60,7 @@
 			<dependency>
 			    <groupId>org.freemarker</groupId>
 			    <artifactId>com.springsource.freemarker</artifactId>
-			    <version>2.3.15</version>
+			    <version>2.3.18</version>
 				<scope>compile</scope>
 			</dependency>
 			<dependency>
@@ -72,25 +72,25 @@
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>org.springframework.test</artifactId>
-			    <version>3.0.0.RELEASE</version>
+			    <version>3.0.5.RELEASE</version>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>org.springframework.instrument</artifactId>
-			    <version>3.0.0</version>
+			    <version>3.0.5.RELEASE</version>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>org.springframework.aspects</artifactId>
-			    <version>3.0.0.RELEASE</version>
+			    <version>3.0.5.RELEASE</version>
 				<scope>test</scope>
 			</dependency>
 			<dependency>
 				<groupId>javax.servlet</groupId>
-				<artifactId>com.springsource.javax.servlet</artifactId>
-				<version>2.5.0</version>
+				<artifactId>javax.servlet</artifactId>
+				<version>3.0.0.v201103241009</version>
 				<scope>provided</scope>
 			</dependency>
 		</dependencies>
