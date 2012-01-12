@@ -401,7 +401,7 @@ It may be necessary to repeat this on a few projects.
 (This process is sometimes known as the <quote>Eclipse dance</quote>.)
 </para>
 <para>
-Despite the dance steps outlined, there will remain some <emphasis>Warnings</emphasis> like this:
+Despite the dance steps outlined, there will remain some <emphasis>Warnings/Errors</emphasis> like this:
 <mediaobject>
     <imageobject role="fo">
         <imagedata fileref="images/installing-greenpages/problem-warning.png" format="PNG" align="center" width="14cm"/>

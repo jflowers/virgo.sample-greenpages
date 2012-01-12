@@ -12,7 +12,6 @@
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.eclipse.virgo</groupId>
 	<artifactId>greenpages.web-solution</artifactId>
 	<name>greenpages.web</name>
 	<packaging>war</packaging>

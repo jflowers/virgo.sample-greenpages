@@ -12,7 +12,6 @@
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.eclipse.virgo</groupId>
 	<artifactId>greenpages.jpa-solution</artifactId>
 	<name>greenpages.jpa</name>
 	<packaging>jar</packaging>

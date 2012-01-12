@@ -39,14 +39,20 @@ See <link linkend="further.resources.documentation">Documentation</link>.
 
 <section id="installation.virgotooling">
 
-<title>Installing the Eclipse @virgo@ Tooling</title>
+<title>Installing the Eclipse Tooling</title>
 
 <para>
 This is necessary only if you would like to run the sample under Eclipse.
 </para>
 <para>
-Please refer to the Virgo Programmer Guide for installation instructions.
+Please refer to the Virgo Programmer Guide for installation instructions of the @virgo@ tooling.
 See <link linkend="further.resources.documentation">Documentation</link>.
+</para>
+
+<para>
+This sample also uses Maven and to support the build in Eclipse you need to install the m2e plugin. 
+This is simple to do from the 'Help' -> 'Install New Software..' menu item. Add a new update site of 
+<literal>http://download.eclipse.org/technology/m2e/releases/</literal> and then use it to install the plugin.
 </para>
 
 </section>

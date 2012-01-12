@@ -12,9 +12,8 @@
 	</parent>
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.eclipse.virgo</groupId>
 	<artifactId>greenpages-solution</artifactId>
-	<name>GreenPages PAR</name>
+	<name>greenpages.par</name>
 	<description>GreenPages PAR</description>
 	<packaging>par</packaging>
 
@@ -61,6 +60,11 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
+				<configuration>
+					<outputDirectory>${project.build.directory}/par-provided</outputDirectory>
+					<overWriteIfNewer>true</overWriteIfNewer>
+					<excludeGroupIds>org.eclipse.virgo,org.apache.log4j</excludeGroupIds>
+				</configuration>
 				<executions>
 					<execution>
 						<id>copy-dependencies</id>
@@ -68,15 +72,10 @@
 						<goals>
 							<goal>copy-dependencies</goal>
 						</goals>
-						<configuration>
-							<outputDirectory>${project.build.directory}/par-provided</outputDirectory>
-							<overWriteIfNewer>true</overWriteIfNewer>
-							<excludeGroupIds>org.eclipse.virgo,org.apache.log4j</excludeGroupIds>
-						</configuration>
 					</execution>
 				</executions>
 			</plugin>
 		</plugins>
-	</build>
-
+    </build>
+  
 </project>
