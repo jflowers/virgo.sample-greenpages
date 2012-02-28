@@ -39,6 +39,11 @@
 			<version>${project.version}</version>
 			<type>war</type>
 		</dependency>
+		<!-- Needs to be included in the PAR so that its classes are loadable via the PAR's synthetic context class loader -->
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>com.springsource.org.h2</artifactId>
+		</dependency>
 		<!-- Required for the web bundle as dependencies are not propagated up from war build types -->
 		<dependency>
 			<groupId>org.freemarker</groupId>
@@ -63,7 +68,7 @@
 				<configuration>
 					<outputDirectory>${project.build.directory}/par-provided</outputDirectory>
 					<overWriteIfNewer>true</overWriteIfNewer>
-					<excludeGroupIds>org.eclipse.virgo,org.apache.log4j</excludeGroupIds>
+					<excludeGroupIds>org.eclipse.virgo,org.apache.log4j,com.h2database</excludeGroupIds>
 				</configuration>
 				<executions>
 					<execution>
