@@ -3,7 +3,7 @@ Export-Package: greenpages.jpa;version="2.3.0";uses:="greenpages,javax
  .sql,org.junit,org.springframework.beans.factory.annotation,org.sprin
  gframework.core.io"
 Bundle-Vendor: SpringSource Inc.
-Bundle-Version: 2.4.0
+Bundle-Version: 2.5.0
 Tool: Bundlor 1.0.0.RELEASE
 Bundle-Name: GreenPages JPA
 Bundle-ManifestVersion: 2
