@@ -7,11 +7,47 @@
 		<pathelement location="../guide"/>
 	</path>
 
-	<property name="integration.repo.dir" value="${basedir}/../integration-repo"/>
-	<property name="ivy.cache.dir" value="${basedir}/../ivy-cache"/>
 	<property file="${basedir}/../build.properties"/>
-	<property file="${basedir}/../build.versions"/>
-	<import file="${basedir}/package-top-level.xml"/>
 	<import file="${basedir}/../virgo-build/multi-bundle/default.xml"/>
+
+	<target name="package" description="Creates the release package for this project">
+		<delete dir="${package.output.dir}" quiet="true"/>
+		<mkdir dir="${package.output.dir}"/>
+		<delete file="${package.output.file}" quiet="true"/>
+		<mkdir dir="${artifacts.dir}"/>
+
+		<copy todir="${package.output.dir}">
+			<fileset dir="${basedir}/resources"/>
+		</copy>
+		
+		<all-bundles buildpathRef="doc.bundles" target="doc">
+			<property name="docbook.output.dir" value="${package.docs.dir}"/>
+		</all-bundles>
+		
+		<copy todir="${package.output.dir}">
+			<fileset dir="${basedir}/..">
+				<include name="db/**"/>
+				<include name="greenpages/**"/>
+				<include name="greenpages.core/**"/>
+				<include name="greenpages.db/**"/>
+				<include name="greenpages.jpa/**"/>
+				<include name="greenpages.web/**"/>
+				<include name="greenpages.parent/**"/>
+				<include name="pom.xml"/>
+				<exclude name="**/target/**"/>
+			</fileset>
+		</copy>
+
+		<chmod perm="755">
+			<fileset dir="${package.output.dir}">
+				<include name="**/*.sh"/>
+			</fileset>
+		</chmod>
+
+		<zip destfile="${package.output.file}">
+			<zipfileset dir="${package.dir}" includes="${package.basename}/**/*.sh" filemode="755"/>
+			<zipfileset dir="${package.dir}" excludes="${package.basename}/**/*.sh"/>
+		</zip>
+	</target>
 
 </project>

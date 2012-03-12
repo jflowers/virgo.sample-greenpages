@@ -5,7 +5,7 @@
 <title>@greenpages@ Highlights</title>
 
 <para>
-This chapter picks out some notable features of the @greenpages@ sample code from the <literal>solution</literal> folder.
+This chapter picks out some notable features of the @greenpages@ sample code from the <literal>greenpages.*</literal> folders.
 </para>
 
 <section id="highlights.wab">
@@ -442,14 +442,14 @@ public class @greenpages@SpringContextTests {]]>
 			This file defines a parent POM and a packaging type of <literal>par</literal>:
 <programlisting language="xml"><![CDATA[<parent>
       <groupId>org.eclipse.virgo</groupId>
-      <artifactId>greenpages.parent-solution</artifactId>
+      <artifactId>greenpages.parent</artifactId>
       <version>2.4.0.RELEASE</version>
-      <relativePath>../parent</relativePath>
+      <relativePath>../greenpages.parent</relativePath>
 </parent>
 
 <modelVersion>4.0.0</modelVersion>
 <groupId>org.eclipse.virgo</groupId>
-<artifactId>greenpages-solution</artifactId>
+<artifactId>greenpages</artifactId>
 <name>GreenPages PAR</name>
 <description>GreenPages PAR</description>
 <packaging>par</packaging>]]>
@@ -463,22 +463,22 @@ public class @greenpages@SpringContextTests {]]>
 <programlisting language="xml"><![CDATA[<dependencies>
       <dependency>
             <groupId>org.eclipse.virgo</groupId>
-            <artifactId>greenpages.app-solution</artifactId>
+            <artifactId>greenpages.app</artifactId>
             <version>${project.version}</version>
       </dependency>
       <dependency>
             <groupId>org.eclipse.virgo</groupId>
-            <artifactId>greenpages.jpa-solution</artifactId>
+            <artifactId>greenpages.jpa</artifactId>
             <version>${project.version}</version>
       </dependency>
       <dependency>
             <groupId>org.eclipse.virgo</groupId>
-            <artifactId>greenpages.db-solution</artifactId>
+            <artifactId>greenpages.db</artifactId>
             <version>${project.version}</version>
       </dependency>
       <dependency>
             <groupId>org.eclipse.virgo</groupId>
-            <artifactId>greenpages.web-solution</artifactId>
+            <artifactId>greenpages.web</artifactId>
             <version>${project.version}</version>
             <type>war</type>
       </dependency>
