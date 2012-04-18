@@ -1,0 +1,4 @@
+Please note that this git repository is intended for Virgo committers to use in order to build the Greenpages
+sample which is published at http://www.eclipse.org/virgo/samples/
+
+Users are advised to use the published sample rather than this git repository.
