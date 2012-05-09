@@ -7,7 +7,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.eclipse.virgo</groupId>
 	<artifactId>greenpages-top-level</artifactId>
-	<version>2.5.0.RELEASE</version>
+	<version>2.6.0.RELEASE</version>
 	<name>GreenPages App Build</name>
 	<packaging>pom</packaging>
 	<modules>
