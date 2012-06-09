@@ -1,3 +1,3 @@
 @echo off
-call set.env.cmd
+call ..\Build\set.env.cmd
 start cmd /K title virgo.sample-greenpages
