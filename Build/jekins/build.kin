@@ -1,25 +1,9 @@
-'My-Deploy' {
-	template = 'deploy.tpl'
-	jobName = 'My-Deploy'
-	description = 'Deploy Ch33 to my environment'
-	releaseBuildServer = '10.153.93.250'
-	
-	wl1Address = 'Unknown'
-	wl1UserName = 'administrator'
-	wl1Password = 'P@ssw0rd12!99$'
-	wl2Address = 'Unknown'
-	wl2UserName = 'administrator'
-	wl2Password = 'P@ssw0rd12!99$'
-	dbAddress = 'Unknown'
-	dbUserName = 'administrator'
-	dbPassword = 'P@ssw0rd12!99$'
-}
 
-'Mock-Vadir-Dev-Build' {
+'Greenpages-Dev-Build' {
 	template = 'maven-dev-build.tpl'
-	description = 'mock vadir incremental dev build'
-	svnUrl = 'https://va33-repo01/svn/Chapter33/External/VADIR/MockVADIR/VadirWS'
-	rootPom = 'pom.xml'
+	description = 'greenpages incremental dev build'
+	svnUrl = 'https://github.com/jflowers/virgo.sample-greenpages.git'
+	rootPom = './Product/pom.xml'
 	mavenCommandLine = 'install -nsu -fae'
-	mavenOpts = '-Xmx512m -XX:MaxPermSize=256m -Djavax.net.ssl.trustStore=C:\\Projects\\Chapter33\\Trunk\\Build\\Tools\\maven\\conf\\trust.jks -Djavax.net.ssl.trustStorePassword=Chapter33'
+	mavenOpts = '-Xmx512m -XX:MaxPermSize=256m'
 }
