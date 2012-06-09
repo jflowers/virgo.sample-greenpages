@@ -7,7 +7,7 @@ class JobManager {
     def jenkinsBaseUrl = 'http://localhost:8080'
 
     def workspaceDir = System.getProperty('workspaceDir')
-    def changeLogPath = System.getProperty('changeLogPath')
+    def buildXmlApiUrl = System.getProperty('buildXmlApiUrl')
 
     public static void main(args){
         def self = new JobManager();
@@ -15,9 +15,9 @@ class JobManager {
     }
 
     def run(){
-        def changes = new XmlSlurper().parseText(new File(changeLogPath).getText())
+        def build = new XmlSlurper().parse(buildXmlApiUrl)
 
-        changes.'**'.grep{ it.name() == 'path' && it.text().endsWith('.kin') }.each {path ->
+        build.changeSet.'**'.grep{ it.name() == 'affectedPath' && it.text().endsWith('.kin') }.each {path ->
             String svnPath = path.text()
             String kinBuildFilePath = convertFromSvnPathToFilePath(svnPath)
             buildJobConfig(kinBuildFilePath).each { Job job ->
