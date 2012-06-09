@@ -1,2 +1,2 @@
 call ..\set.env.cmd
-chef-solo -j \etc\chef\node.json
+chef-solo -c %CD%\solo.rb
