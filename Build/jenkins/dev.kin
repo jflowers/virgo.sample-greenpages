@@ -2,7 +2,7 @@
 branch = 'next'
 
 "greenpages-dev-build-$branch" {
-	template = 'maven-dev-build.tpl'
+	template = 'templates/maven-dev-build.tpl'
 	description = "greenpages incremental dev build for the branch $branch"
 	gitUrl = 'https://github.com/jflowers/virgo.sample-greenpages.git'
 	gitBranch = branch

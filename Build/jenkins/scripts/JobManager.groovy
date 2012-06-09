@@ -80,7 +80,7 @@ class JobManager {
         build.producers().each { job ->
             def name = job.name
             def templates = build.templates(name)
-            def template = findValidTemplate(templates)
+            def template = findValidTemplate(kinBuildFilePath, templates)
             if (!template) {
                 System.err.println "No template $templates for job '$name'!"
                 System.exit 4
@@ -98,9 +98,12 @@ class JobManager {
         return jobs
     }
 
-    File findValidTemplate(List<String> templateNames) {
+    File findValidTemplate(String kinBuildFilePath, List<String> templateNames) {
+		
         templateNames.findResult { name ->
-            def template = new File(workspaceDir, name)
+			def templatePath = new File(kinBuildFilePath).parent + '/' + name
+			println "looking for template here: $templatePath"
+            def template = new File(templatePath)
             template.isFile() ? template : null
         }
     }
