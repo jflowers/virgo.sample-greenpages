@@ -1,9 +1,0 @@
-
-'Greenpages-Dev-Build' {
-	template = 'maven-dev-build.tpl'
-	description = 'greenpages incremental dev build'
-	svnUrl = 'https://github.com/jflowers/virgo.sample-greenpages.git'
-	rootPom = './Product/pom.xml'
-	mavenCommandLine = 'install -nsu -fae'
-	mavenOpts = '-Xmx512m -XX:MaxPermSize=256m'
-}
