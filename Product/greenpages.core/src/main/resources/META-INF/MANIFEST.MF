@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Export-Package: greenpages;version="2.5.0"
+Bundle-Vendor: SpringSource Inc.
+Bundle-Version: 2.5.0
+Tool: Bundlor 1.1.0.M04
+Bundle-Name: GreenPages Service
+Bundle-ManifestVersion: 2
+Bundle-SymbolicName: greenpages.core
+

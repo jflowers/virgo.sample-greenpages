@@ -1,0 +1,23 @@
+Manifest-Version: 1.0
+Import-Bundle: com.springsource.org.apache.taglibs.standard;version="[
+ 1.1.2,2.0)"
+Bundle-ClassPath: .,WEB-INF/classes
+Bundle-Version: 2.5.0
+Tool: Bundlor 1.1.0.BUILD-20101220120024
+Bundle-Name: GreenPages Web
+Import-Library: org.springframework.spring;version="[3.0, 3.1)"
+Bundle-ManifestVersion: 2
+Bundle-SymbolicName: greenpages.web
+Web-ContextPath: greenpages
+Import-Package: freemarker.cache;version="[2.3.18,2.3.18]",greenpages;
+ version="[2.5, 2.6)",javax.servlet;version="[3.0.0, 3.1.0)",javax.ser
+ vlet.jsp.jstl.core;version="[1.2.0, 2.0.0)",javax.sql,org.apache.comm
+ ons.dbcp,org.eclipse.virgo.web.dm;version="[3.0.0, 4.0.0)",org.spring
+ framework.beans.factory.annotation;version="[3.0, 3.1)",org.springfra
+ mework.core.io;version="[3.0, 3.1)",org.springframework.stereotype;ve
+ rsion="[3.0, 3.1)",org.springframework.web.bind.annotation;version="[
+ 3.0, 3.1)",org.springframework.web.context;version="[3.0, 3.1)",org.s
+ pringframework.web.servlet;version="[3.0, 3.1)",org.springframework.w
+ eb.servlet.mvc.annotation;version="[3.0, 3.1)",org.springframework.we
+ b.servlet.view.freemarker;version="[3.0, 3.1)"
+
