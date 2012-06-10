@@ -19,7 +19,7 @@ class JobManager {
 		
 		if (gitBranch == 'HEAD')
 		{
-			gitBranch = '"C:\Program Files (x86)\Git\cmd\git.cmd" symbolic-ref refs/remotes/origin/HEAD'.execute().text.trim().replace('refs/remotes/origin/', '')
+			gitBranch = '"C:\\Program Files (x86)\\Git\\cmd\\git.cmd" symbolic-ref refs/remotes/origin/HEAD'.execute().text.trim().replace('refs/remotes/origin/', '')
 			println "resetting current branch name to $gitBranch, was pointed to HEAD"
 		}
         def build = new XmlSlurper().parse(buildXmlApiUrl)
