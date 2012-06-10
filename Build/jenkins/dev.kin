@@ -5,6 +5,6 @@
 	gitUrl = 'https://github.com/jflowers/virgo.sample-greenpages.git'
 	gitBranch = 'next'
 	rootPom = './Product/pom.xml'
-	mavenCommandLine = 'install -nsu -fae'
+	mavenCommandLine = 'install'
 	mavenOpts = '-Xmx512m -XX:MaxPermSize=256m'
 }

@@ -64,6 +64,7 @@
   <concurrentBuild>true</concurrentBuild>
   <rootPOM>$rootPom</rootPOM>
   <goals>$mavenCommandLine</goals>
+  <mavenName>maven-2.2.1</mavenName>
   <mavenOpts>$mavenOpts</mavenOpts>
   <aggregatorStyleBuild>true</aggregatorStyleBuild>
   <incrementalBuild>true</incrementalBuild>
