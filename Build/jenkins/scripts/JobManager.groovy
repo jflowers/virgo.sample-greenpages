@@ -8,6 +8,7 @@ class JobManager {
 
     def workspaceDir = System.getProperty('workspaceDir')
     def buildXmlApiUrl = System.getProperty('buildXmlApiUrl')
+	def gitBranch = System.getProperty('gitBranch')
 
     public static void main(args){
         def self = new JobManager();
@@ -17,18 +18,36 @@ class JobManager {
     def run(){
         def build = new XmlSlurper().parse(buildXmlApiUrl)
 
+		boolean changesFound = false
         build.changeSet.'**'.grep{ it.name() == 'affectedPath' && it.text().endsWith('.kin') }.each {path ->
+			changesFound = true
             String svnPath = path.text()
             String kinBuildFilePath = convertFromSvnPathToFilePath(svnPath)
-            buildJobConfig(kinBuildFilePath).each { Job job ->
-				if (!doesJobExist(job.name)) {
-					createJob(job)
-				} else {
-					updateJob(job)
-				}
-			}
+            buildAndPublishJobs(kinBuildFilePath)
         }
+		
+		//this executes if there where no changes, thre would be no changes in two instances, a forced build and the introduction of a new branch
+		if (!changesFound) {
+			def dir = new File('./Build/jenkins')
+			dir.traverse(
+				type:FileType.FILES,
+				nameFilter:~/.*\.kin/,
+				maxDepth:0
+			) {
+				println it
+			}
+		}
     }
+	
+	def buildAndPublishJobs(String kinBuildFilePath) {
+		buildJobConfig(kinBuildFilePath).each { Job job ->
+			if (!doesJobExist(job.name)) {
+				createJob(job)
+			} else {
+				updateJob(job)
+			}
+		}
+	}
 
     @GrabResolver(name = "ch33nexus", root = "http://10.153.10.173:8082/nexus/content/groups/public")
     @Grab('jenkins:jenkins-cli:1.460')
@@ -78,6 +97,11 @@ class JobManager {
         def build = runner.run(dsl)
 		def jobs = new ArrayList<Job>()
         build.producers().each { job ->
+			if (job.gitBranch != gitBranch)
+			{
+				println "Error: Job ${job.name} git branch is not set correctly, was expecting $gitBranch, but ${job.gitBranch} is set.  In file $kinBuildFilePath."
+				System.exit(1)
+			}
             def name = job.name
             def templates = build.templates(name)
             def template = findValidTemplate(kinBuildFilePath, templates)
