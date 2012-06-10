@@ -39,7 +39,7 @@ class JobDestroyer {
 			def jobConfig = new XmlSlurper().parseText(getJob(job.name.text()))
 			def gitBranch = jobConfig.'*'.find{ it.name() == 'scm' }.branches.'hudson.plugins.git.BranchSpec'.name.text()
 			println "checking if remote branch $gitBranch exists"
-			if (!gitBranch in remoteBranches) {
+			if (!(gitBranch in remoteBranches)) {
 				deleteJob(job.name.text())
 			}
 		}
