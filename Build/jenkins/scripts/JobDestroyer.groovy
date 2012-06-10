@@ -23,7 +23,7 @@ class JobDestroyer {
     }
 
     def run(){
-		Repository repository = RepositoryCache.open(RepositoryCache.FileKey.lenient(new File(directory),FS.DETECTED), true)
+		Repository repository = RepositoryCache.open(RepositoryCache.FileKey.lenient(new File('.'),FS.DETECTED), true)
 		
 		Map<String, Ref> remotesRefList = repository.getRefDatabase().getRefs(Constants.R_REMOTES)
 		for (String remoteKey : remotesRefList.keySet()) {
@@ -34,13 +34,13 @@ class JobDestroyer {
 
         def jenkinsMain = new XmlSlurper().parse("$jenkinsBaseUrl/api/xml")
 		
-		jenkinsMain.job.grep{ job -> job.name != 'Creator' && job.name != 'Destroyer' }.each{ job ->
-			println "checking if we should destroy job ${job.name}"
-			def jobConfig = new XmlSlurper().parseText(getJob(job.name))
-			def gitBranch = jobConfig.'*'.scm.branches.'hudson.plugins.git.BranchSpec'.name
+		jenkinsMain.job.grep{ job -> job.name.text() != 'Creator' && job.name.text() != 'Destroyer' }.each{ job ->
+			println "checking if we should destroy job ${job.name.text()}"
+			def jobConfig = new XmlSlurper().parseText(getJob(job.name.text()))
+			def gitBranch = jobConfig.'*'.find{ it.name() == 'scm' }.branches.'hudson.plugins.git.BranchSpec'.name.text()
 			println "checking if remote branch $gitBranch exists"
 			if (!gitBranch in remoteBranches) {
-				deleteJob(job.name)
+				deleteJob(job.name.text())
 			}
 		}
     }
