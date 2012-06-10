@@ -1,9 +1,9 @@
 
-"greenpages-dev-build-next" {
+"greenpages-dev-build-master" {
 	template = 'templates/maven-dev-build.tpl'
-	description = "greenpages incremental dev build for the branch next"
+	description = "greenpages incremental dev build for the branch master"
 	gitUrl = 'https://github.com/jflowers/virgo.sample-greenpages.git'
-	gitBranch = 'next'
+	gitBranch = 'master'
 	rootPom = './Product/pom.xml'
 	mavenCommandLine = 'install'
 	mavenOpts = '-Xmx512m -XX:MaxPermSize=256m'
