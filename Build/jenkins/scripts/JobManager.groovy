@@ -8,7 +8,7 @@ class JobManager {
 
     def workspaceDir = System.getProperty('workspaceDir')
     def buildXmlApiUrl = System.getProperty('buildXmlApiUrl')
-	def gitBranch = System.getProperty('gitBranch')
+	def gitBranch = System.getProperty('gitBranch').replace('origin/', '')
 
     public static void main(args){
         def self = new JobManager();
@@ -30,11 +30,11 @@ class JobManager {
 		if (!changesFound) {
 			def dir = new File('./Build/jenkins')
 			dir.traverse(
-				type:FileType.FILES,
+				type:groovy.io.FileType.FILES,
 				nameFilter:~/.*\.kin/,
 				maxDepth:0
-			) {
-				println it
+			) { kinBuildFilePath ->
+				buildAndPublishJobs(kinBuildFilePath.absolutePath)
 			}
 		}
     }
