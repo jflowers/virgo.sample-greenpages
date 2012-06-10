@@ -28,7 +28,7 @@
     </userRemoteConfigs>
     <branches>
       <hudson.plugins.git.BranchSpec>
-        <name>**</name>
+        <name>next</name>
       </hudson.plugins.git.BranchSpec>
     </branches>
     <disableSubmodules>false</disableSubmodules>
@@ -50,7 +50,7 @@
     <gitConfigName></gitConfigName>
     <gitConfigEmail></gitConfigEmail>
     <skipTag>false</skipTag>
-    <includedRegions>Build/jenkins/.*\.kin</includedRegions>
+    <includedRegions>Build/jenkins/scripts/JobDestroyer.groovy</includedRegions>
     <scmName></scmName>
   </scm>
   <canRoam>true</canRoam>
@@ -58,22 +58,22 @@
   <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
   <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
   <triggers class="vector">
-    <hudson.triggers.SCMTrigger>
-      <spec>* * * * *</spec>
-    </hudson.triggers.SCMTrigger>
+    <hudson.triggers.TimerTrigger>
+      <spec>0 * * * *</spec>
+    </hudson.triggers.TimerTrigger>
   </triggers>
   <concurrentBuild>false</concurrentBuild>
   <builders>
     <hudson.plugins.groovy.Groovy>
       <scriptSource class="hudson.plugins.groovy.FileScriptSource">
-        <scriptFile>Build\jenkins\scripts\JobManager.groovy</scriptFile>
+        <scriptFile>Build\jenkins\scripts\JobDestroyer.groovy</scriptFile>
       </scriptSource>
       <groovyName>groovy-1.8.6</groovyName>
-      <parameters>-DbuildXmlApiUrl=${BUILD_URL}api/xml -DworkspaceDir=${WORKSPACE} -DgitBranch=${GIT_BRANCH}</parameters>
+      <parameters></parameters>
       <scriptParameters></scriptParameters>
       <properties></properties>
       <javaOpts></javaOpts>
-      <classPath>${WORKSPACE}\Build\jenkins\scripts</classPath>
+      <classPath></classPath>
     </hudson.plugins.groovy.Groovy>
   </builders>
   <publishers/>
