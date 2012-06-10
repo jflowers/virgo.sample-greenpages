@@ -79,11 +79,7 @@
   <globalSettingConfigId></globalSettingConfigId>
   <reporters/>
   <publishers/>
-  <buildWrappers>
-    <org.jenkinsci.plugins.buildnamesetter.BuildNameSetter>
-      <template>Dev-\${ENV,var=&quot;SVN_REVISION&quot;}</template>
-    </org.jenkinsci.plugins.buildnamesetter.BuildNameSetter>
-  </buildWrappers>
+  <buildWrappers/>
   <prebuilders/>
   <postbuilders/>
   <runPostStepsIfResult>
