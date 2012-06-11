@@ -98,15 +98,12 @@ class JobManager {
         hr.helix.kin.IO io = new hr.helix.kin.IO()
         hr.helix.kin.script.Runner runner = new hr.helix.kin.script.Runner()
         SimpleTemplateEngine engine = new groovy.text.SimpleTemplateEngine()
-        String dsl = new File(kinBuildFilePath).getText()
+        String dsl = new File(kinBuildFilePath).getText().replace('%branch%', gitBranch)
 
         def build = runner.run(dsl)
 		def jobs = new ArrayList<Job>()
         build.producers().each { job ->
-            def name = job.name.replace('%branch%', gitBranch)
-			job.name = name
-			job.description = job.description.replace('%branch%', gitBranch)
-			job.gitBranch = job.gitBranch.replace('%branch%', gitBranch)
+            def name = job.name
             def templates = build.templates(name)
             def template = findValidTemplate(kinBuildFilePath, templates)
             if (!template) {
