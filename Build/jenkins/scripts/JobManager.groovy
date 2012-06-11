@@ -103,12 +103,10 @@ class JobManager {
         def build = runner.run(dsl)
 		def jobs = new ArrayList<Job>()
         build.producers().each { job ->
-			if (job.gitBranch != gitBranch)
-			{
-				println "Error: Job ${job.name} git branch is not set correctly, was expecting $gitBranch, but ${job.gitBranch} is set.  In file $kinBuildFilePath."
-				System.exit(1)
-			}
-            def name = job.name
+            def name = job.name.replace('%branch%', gitBranch)
+			job.name = name
+			job.description = job.description.replace('%branch%', gitBranch)
+			job.gitBranch = job.gitBranch.replace('%branch%', gitBranch)
             def templates = build.templates(name)
             def template = findValidTemplate(kinBuildFilePath, templates)
             if (!template) {
