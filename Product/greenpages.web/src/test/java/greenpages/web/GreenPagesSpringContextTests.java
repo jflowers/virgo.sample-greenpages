@@ -27,7 +27,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath*:/META-INF/spring/module-context.xml", "file:src/main/webapp/WEB-INF/greenpages-servlet.xml", "classpath:/META-INF/spring/test-context.xml" })
+@ContextConfiguration(locations = { "classpath*:/META-INF/spring/module-context.xml", "file:src/main/resources/WEB-INF/greenpages-servlet.xml", "classpath:/META-INF/spring/test-context.xml" })
 @TestExecutionListeners(value = DependencyInjectionTestExecutionListener.class)
 public class GreenPagesSpringContextTests {
 
