@@ -11,6 +11,9 @@ task deployPar(type:Copy) {
    into 'C:/Virgo/virgo-tomcat-server-3.0.3.RELEASE/pickup'
 }
 
+task startServers(dependsOn: ['startDatabase', 'startVirgo']) {}
+task stopServers(dependsOn: ['stopDatabase', 'stopVirgo']) {}
+
 task startDatabase << {
 	ant.exec(
 		dir: 'db',
@@ -26,11 +29,32 @@ task startDatabase << {
 }
 
 task stopDatabase << {
-	ant.exec(
-		dir: 'db',
-		executable: 'stop.bat',
-		vmlauncher: false
-	)
+	ant.condition(property: 'databaseIsUp', value: 'true') {
+		socket(server:'localhost', port:'9092')
+	}
+	if (ant.project.properties.databaseIsUp == 'true') {
+		ant.exec(
+			dir: 'db',
+			executable: 'stop.bat',
+			failonerror: false,
+			vmlauncher: false,
+			resultproperty:"cmdExitStopDatabase",
+			outputproperty:"cmdOutStopDatabase",
+			errorproperty: "cmdErrStopDatabase"
+		)
+		
+		println "return code:  ${ant.project.properties.cmdExitStopDatabase}"
+		println """stderr:
+${ant.project.properties.cmdErrStopDatabase}
+################################"""
+		println """stdout:
+${ ant.project.properties.cmdOutStopDatabase}
+################################"""
+		
+		if (ant.project.properties.cmdExitStopDatabase != '0') {
+			throw new GradleException('Failed to stop database.')
+		}
+	}
 }
 
 task startVirgo << {
@@ -45,9 +69,30 @@ task startVirgo << {
 }
 
 task stopVirgo << {
-	ant.exec(
-		dir: 'C:/Virgo/virgo-tomcat-server-3.0.3.RELEASE/bin',
-		executable: 'shutdown.bat',
-		vmlauncher: false
-	)
+	ant.condition(property: 'virgoIsUp', value: 'true') {
+		socket(server:'localhost', port:'8081')
+	}
+	if (ant.project.properties.virgoIsUp == 'true') {
+		ant.exec(
+			dir: 'C:/Virgo/virgo-tomcat-server-3.0.3.RELEASE/bin',
+			executable: 'shutdown.bat',
+			failonerror: false,
+			vmlauncher: false,
+			resultproperty:"cmdExitStopVirgo",
+			outputproperty:"cmdOutStopVirgo",
+			errorproperty: "cmdErrStopVirgo"
+		)
+		
+		println "return code:  ${ant.project.properties.cmdExitStopVirgo}"
+		println """stderr:
+${ant.project.properties.cmdErrStopVirgo}
+################################"""
+		println """stdout:
+${ ant.project.properties.cmdOutStopVirgo}
+################################"""
+		
+		if (ant.project.properties.cmdExitStopVirgo != '0') {
+			throw new GradleException('Failed to stop virgo.')
+		}
+	}
 }
