@@ -64,7 +64,7 @@
       <description></description>
       <switches></switches>
       <tasks>stopServers</tasks>
-      <rootBuildScriptDir></rootBuildScriptDir>
+      <rootBuildScriptDir>./Product</rootBuildScriptDir>
       <buildFile></buildFile>
       <gradleName>gradle-1.0-rc-3</gradleName>
       <useWrapper>false</useWrapper>
@@ -78,7 +78,7 @@
       <description></description>
       <switches></switches>
       <tasks>deploy startServers</tasks>
-      <rootBuildScriptDir></rootBuildScriptDir>
+      <rootBuildScriptDir>./Product</rootBuildScriptDir>
       <buildFile></buildFile>
       <gradleName>gradle-1.0-rc-3</gradleName>
       <useWrapper>false</useWrapper>
