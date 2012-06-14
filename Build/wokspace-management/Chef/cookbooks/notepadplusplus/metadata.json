@@ -1,0 +1,31 @@
+{
+  "dependencies": {
+    "windows": ">= 1.2.8"
+  },
+  "name": "notepadplusplus",
+  "maintainer_email": "nathan@globalphobia.com",
+  "attributes": {
+  },
+  "license": "Apache 2.0",
+  "suggestions": {
+  },
+  "platforms": {
+    "windows": ">= 0.0.0"
+  },
+  "maintainer": "Nathan Lee",
+  "long_description": "Description\n===========\n\n[Notepad++](http://notepad-plus-plus.org/) is a free (as in \"free speech\" and also as in \"free beer\") source code editor and Notepad replacement that supports several languages. Running in the MS Windows environment, its use is governed by GPL License.\n\nRequirements\n============\n\nPlatform\n--------\n\n* Windows XP\n* Windows Vista\n* Windows Server 2003 R2\n* Windows 7\n* Windows Server 2008 (R1, R2)\n\nCookbooks\n---------\n\n* windows\n\nAttributes\n==========\n\n\nUsage\n=====\n\ndefault\n-------\n\n\n\n",
+  "version": "0.0.5",
+  "recommendations": {
+  },
+  "recipes": {
+  },
+  "groupings": {
+  },
+  "conflicting": {
+  },
+  "replacing": {
+  },
+  "description": "Installs/Configures Notepad++",
+  "providing": {
+  }
+}

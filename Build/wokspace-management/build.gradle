@@ -1,0 +1,70 @@
+version = '1.0'
+
+ant.mkdir(dir: 'build')
+
+task clean(type: Delete) {
+    delete 'build'
+}
+
+task createSfx << {
+	ant.mkdir(dir:'SfxRoot/Chef/Chef/Cache')
+	ant.mkdir(dir:'SfxRoot/Chef/Chef/Cookbooks')
+	ant.exec(
+		dir: 'SfxRoot',
+		executable: 'C:\\Program Files (x86)\\7-Zip\\7z.exe',
+		failonerror: false,
+		vmlauncher: false,
+		resultproperty:"cmdExit",
+		outputproperty:"cmdOut",
+        errorproperty: "cmdErr"
+	) {
+		arg(line: 'a')
+		arg(line: '-t7z')
+		arg(line: '..\\build\\Workspace-Setup.7z')
+		arg(line: '.\\')
+	}
+	
+	println "return code:  ${ant.project.properties.cmdExit}"
+	println """stderr:
+${ant.project.properties.cmdErr}
+################################"""
+	println """stdout:
+${ ant.project.properties.cmdOut}
+################################"""
+	
+	if (ant.project.properties.cmdExit != '0') {
+		throw new GradleException('Failed to create 7z file.')
+	}
+	String copyCommand = 'cmd /C copy /Y /b 7zsd.sfx + SfxRoot\\config.txt + build\\Workspace-Setup.7z build\\Workspace-Setup.exe'
+	println copyCommand
+	
+	String output = copyCommand.execute().text
+	println output
+	
+	if (!(new File('build/Workspace-Setup.exe')).exists()) {
+		throw new GradleException('Filed to create sfx file.')
+	}
+}
+
+task createCookbook(type: Tar){
+    compression = Compression.GZIP 
+	from 'Chef'
+	exclude 'node.json'
+    baseName = 'chef-solo-cookbooks'
+	extension = 'tar.gz'
+	destinationDir = new File('build')
+}
+
+task publishCookbook(type:Exec, dependsOn: 'createCookbook') {
+  commandLine 'cmd', '/c', "mvn deploy:deploy-file -Durl=https://nexus.repo:8443/nexus/content/repositories/thirdparty -DrepositoryId=nexus -Dfile=C:/Projects/workspace-management/build/chef-solo-cookbooks.tar.gz -DgroupId=com.agilex.chef -DartifactId=chef-solo-cookbooks -Dversion=$version -Dpackaging=tar.gz"
+}
+
+task publishNodeConfig(type:Exec) {
+  commandLine 'cmd', '/c', "mvn deploy:deploy-file -Durl=https://nexus.repo:8443/nexus/content/repositories/thirdparty -DrepositoryId=nexus -Dfile=C:/Projects/workspace-management/Chef/node.json -DgroupId=com.agilex.chef -DartifactId=node -Dversion=$version -Dpackaging=json"
+}
+
+task build(dependsOn: ['createCookbook', 'createSfx']) {}
+
+task publish(dependsOn: ['publishCookbook', 'publishNodeConfig']) {}
+
+task all(dependsOn: ['build', 'publish']) {}

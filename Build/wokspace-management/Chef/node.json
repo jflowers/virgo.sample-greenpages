@@ -1,0 +1,15 @@
+{
+  "run_list": [ 
+	"recipe[git]", 
+	"recipe[tortoisegit]", 
+	"recipe[get_git_source]", 
+	"recipe[springsource_sts]" , 
+	"recipe[java]", 
+	"recipe[sysinternals]", 
+	"recipe[virgo]", 
+	"recipe[gradle]",
+	"recipe[notepadplusplus]",
+	"recipe[maven]",
+	"recipe[groovy]"
+  ]
+}

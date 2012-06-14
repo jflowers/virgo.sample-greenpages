@@ -1,0 +1,5 @@
+;!@Install@!UTF-8!
+RunProgram="cmd /C run.bat"
+ExtractTitle="Upacking WorkspaceSetup..."
+GUIMode="1"
+;!@InstallEnd@!
