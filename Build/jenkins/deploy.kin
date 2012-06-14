@@ -1,0 +1,7 @@
+
+"greenpages-deploy-%branch%" {
+	template = 'templates/deploy.tpl'
+	description = "greenpages deployment job for the branch %branch%"
+	gitUrl = 'https://github.com/jflowers/virgo.sample-greenpages.git'
+	gitBranch = '%branch%'
+}

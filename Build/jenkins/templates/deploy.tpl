@@ -1,24 +1,27 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<maven2-moduleset>
+<project>
   <actions/>
   <description>$description</description>
-  <logRotator>
-    <daysToKeep>-1</daysToKeep>
-    <numToKeep>30</numToKeep>
-    <artifactDaysToKeep>-1</artifactDaysToKeep>
-    <artifactNumToKeep>-1</artifactNumToKeep>
-  </logRotator>
   <keepDependencies>false</keepDependencies>
   <properties>
     <com.nirima.AdaptivePluginProperty>
       <script></script>
     </com.nirima.AdaptivePluginProperty>
+    <hudson.plugins.throttleconcurrents.ThrottleJobProperty>
+      <maxConcurrentPerNode>0</maxConcurrentPerNode>
+      <maxConcurrentTotal>0</maxConcurrentTotal>
+      <categories>
+        <string>virgo</string>
+      </categories>
+      <throttleEnabled>true</throttleEnabled>
+      <throttleOption>category</throttleOption>
+    </hudson.plugins.throttleconcurrents.ThrottleJobProperty>
   </properties>
   <scm class="hudson.plugins.git.GitSCM">
     <configVersion>2</configVersion>
     <userRemoteConfigs>
       <hudson.plugins.git.UserRemoteConfig>
-        <name>origin</name>
+        <name></name>
         <refspec></refspec>
         <url>$gitUrl</url>
       </hudson.plugins.git.UserRemoteConfig>
@@ -34,7 +37,7 @@
     <authorOrCommitter>false</authorOrCommitter>
     <clean>false</clean>
     <wipeOutWorkspace>false</wipeOutWorkspace>
-    <pruneBranches>false</pruneBranches>
+    <pruneBranches>true</pruneBranches>
     <remotePoll>false</remotePoll>
     <ignoreNotifyCommit>false</ignoreNotifyCommit>
     <buildChooser class="hudson.plugins.git.util.DefaultBuildChooser"/>
@@ -50,50 +53,37 @@
     <includedRegions>Product/.*</includedRegions>
     <scmName></scmName>
   </scm>
-  <assignedNode></assignedNode>
   <canRoam>true</canRoam>
   <disabled>false</disabled>
   <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
   <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
-  <jdk>(Default)</jdk>
-  <triggers class="vector">
-    <hudson.triggers.SCMTrigger>
-      <spec>* * * * *</spec>
-    </hudson.triggers.SCMTrigger>
-  </triggers>
-  <concurrentBuild>true</concurrentBuild>
-  <rootPOM>$rootPom</rootPOM>
-  <goals>$mavenCommandLine</goals>
-  <mavenName>maven-2.2.1</mavenName>
-  <mavenOpts>$mavenOpts</mavenOpts>
-  <aggregatorStyleBuild>true</aggregatorStyleBuild>
-  <incrementalBuild>true</incrementalBuild>
-  <perModuleEmail>true</perModuleEmail>
-  <ignoreUpstremChanges>true</ignoreUpstremChanges>
-  <archivingDisabled>false</archivingDisabled>
-  <resolveDependencies>false</resolveDependencies>
-  <processPlugins>false</processPlugins>
-  <mavenValidationLevel>-1</mavenValidationLevel>
-  <runHeadless>false</runHeadless>
-  <settingConfigId></settingConfigId>
-  <globalSettingConfigId></globalSettingConfigId>
-  <reporters/>
-  <publishers>
-    <hudson.tasks.BuildTrigger>
-      <childProjects>greenpages-deploy-$gitBranch</childProjects>
-      <threshold>
-        <name>SUCCESS</name>
-        <ordinal>0</ordinal>
-        <color>BLUE</color>
-      </threshold>
-    </hudson.tasks.BuildTrigger>
-  </publishers>
+  <triggers class="vector"/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.plugins.gradle.Gradle>
+      <description></description>
+      <switches></switches>
+      <tasks>stopServers</tasks>
+      <rootBuildScriptDir></rootBuildScriptDir>
+      <buildFile></buildFile>
+      <gradleName>gradle-1.0-rc-3</gradleName>
+      <useWrapper>false</useWrapper>
+    </hudson.plugins.gradle.Gradle>
+    <hudson.tasks.Maven>
+      <targets>install -Dmaven.test.skip</targets>
+      <mavenName>maven-2.2.1</mavenName>
+      <usePrivateRepository>false</usePrivateRepository>
+    </hudson.tasks.Maven>
+    <hudson.plugins.gradle.Gradle>
+      <description></description>
+      <switches></switches>
+      <tasks>deploy startServers</tasks>
+      <rootBuildScriptDir></rootBuildScriptDir>
+      <buildFile></buildFile>
+      <gradleName>gradle-1.0-rc-3</gradleName>
+      <useWrapper>false</useWrapper>
+    </hudson.plugins.gradle.Gradle>
+  </builders>
+  <publishers/>
   <buildWrappers/>
-  <prebuilders/>
-  <postbuilders/>
-  <runPostStepsIfResult>
-    <name>FAILURE</name>
-    <ordinal>2</ordinal>
-    <color>RED</color>
-  </runPostStepsIfResult>
-</maven2-moduleset>
+</project>
