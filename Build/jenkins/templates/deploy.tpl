@@ -72,6 +72,8 @@
     <hudson.tasks.Maven>
       <targets>install -Dmaven.test.skip</targets>
       <mavenName>maven-2.2.1</mavenName>
+      <jvmOptions>-Xmx512m -XX:MaxPermSize=256m</jvmOptions>
+      <pom>./Product/pom.xml</pom>
       <usePrivateRepository>false</usePrivateRepository>
     </hudson.tasks.Maven>
     <hudson.plugins.gradle.Gradle>
