@@ -1,0 +1,53 @@
+
+task deploy(dependsOn: ['deployDependencies', 'deployPar']) {}
+
+task deployDependencies(type:Copy) {
+   from 'greenpages/target/par-provided'
+   into 'C:/Virgo/virgo-tomcat-server-3.0.3.RELEASE/repository/usr'
+}
+
+task deployPar(type:Copy) {
+   from 'greenpages/target/greenpages-2.6.0.RELEASE.par'
+   into 'C:/Virgo/virgo-tomcat-server-3.0.3.RELEASE/pickup'
+}
+
+task startDatabase << {
+	ant.exec(
+		dir: 'db',
+		executable: 'run.bat',
+		spawn: true,
+		vmlauncher: false
+	)
+	ant.exec(
+		dir: 'db',
+		executable: 'data.bat',
+		vmlauncher: false
+	)
+}
+
+task stopDatabase << {
+	ant.exec(
+		dir: 'db',
+		executable: 'stop.bat',
+		vmlauncher: false
+	)
+}
+
+task startVirgo << {
+	ant.exec(
+		dir: 'C:/Virgo/virgo-tomcat-server-3.0.3.RELEASE/bin',
+		executable: 'startup.bat',
+		spawn: true,
+		vmlauncher: false
+	) {
+		arg(line: '-clean')
+	}
+}
+
+task stopVirgo << {
+	ant.exec(
+		dir: 'C:/Virgo/virgo-tomcat-server-3.0.3.RELEASE/bin',
+		executable: 'shutdown.bat',
+		vmlauncher: false
+	)
+}
