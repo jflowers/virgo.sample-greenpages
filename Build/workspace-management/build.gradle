@@ -55,12 +55,14 @@ task createCookbook(type: Tar){
 	destinationDir = new File('build')
 }
 
+def env = System.getenv()
+
 task publishCookbook(type:Exec, dependsOn: 'createCookbook') {
-  commandLine 'cmd', '/c', "mvn deploy:deploy-file -Durl=https://nexus.repo:8443/nexus/content/repositories/thirdparty -DrepositoryId=nexus -Dfile=C:/Projects/workspace-management/build/chef-solo-cookbooks.tar.gz -DgroupId=com.agilex.chef -DartifactId=chef-solo-cookbooks -Dversion=$version -Dpackaging=tar.gz"
+  commandLine 'cmd', '/c', "${env['M2_HOME']}/bin/mvn deploy:deploy-file -Durl=https://nexus.repo:8443/nexus/content/repositories/thirdparty -DrepositoryId=nexus -Dfile=C:/Projects/workspace-management/build/chef-solo-cookbooks.tar.gz -DgroupId=com.agilex.chef -DartifactId=chef-solo-cookbooks -Dversion=$version -Dpackaging=tar.gz"
 }
 
 task publishNodeConfig(type:Exec) {
-  commandLine 'cmd', '/c', "mvn deploy:deploy-file -Durl=https://nexus.repo:8443/nexus/content/repositories/thirdparty -DrepositoryId=nexus -Dfile=C:/Projects/workspace-management/Chef/node.json -DgroupId=com.agilex.chef -DartifactId=node -Dversion=$version -Dpackaging=json"
+  commandLine 'cmd', '/c', "${env['M2_HOME']}/bin/mvn deploy:deploy-file -Durl=https://nexus.repo:8443/nexus/content/repositories/thirdparty -DrepositoryId=nexus -Dfile=C:/Projects/workspace-management/Chef/node.json -DgroupId=com.agilex.chef -DartifactId=node -Dversion=$version -Dpackaging=json"
 }
 
 task build(dependsOn: ['createCookbook', 'createSfx']) {}
