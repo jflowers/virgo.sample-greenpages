@@ -3,6 +3,12 @@ SET PATH=%SystemRoot%\system32;%SystemRoot%;%SystemRoot%\System32\Wbem;C:\opscod
 
 IF NOT EXIST C:\opscode\chef\bin\chef-solo.bat msiexec /qb /i chef-client-latest.msi
 
+mkdir C:\tools
+mkdir C:\tools\chef
+mkdir C:\tools\chef\cache
+mkdir C:\tools\chef\backup
+mkdir C:\tools\chef\roles
+
 call chef-solo -c %CD%\Chef\solo.rb
 
 pause
