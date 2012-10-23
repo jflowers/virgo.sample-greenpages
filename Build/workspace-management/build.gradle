@@ -7,7 +7,7 @@ task clean(type: Delete) {
 }
 
 task createSfx << {
-
+	ant.copy(overwrite: true, file: '../set.env.cmd', toDir: 'SfxRoot')
 	ant.exec(
 		dir: 'SfxRoot',
 		executable: 'C:\\Program Files (x86)\\7-Zip\\7z.exe',
